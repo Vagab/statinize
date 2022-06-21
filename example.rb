@@ -15,7 +15,7 @@ end
 
 begin
   ExampleClass.new(last_name: 1)
-rescue ValidationError => e
+rescue Statinize::ValidationError => e
   puts e.message
 end
 
@@ -37,6 +37,6 @@ end
 
 begin
   AnotherExampleClass.new
-rescue ValidationError => e
+rescue Statinize::ValidationError => e
   puts e.message
 end
