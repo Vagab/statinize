@@ -1,18 +1,21 @@
 class Statinizer
-  attr_reader :attrs, :options, :force
+  attr_reader :attrs, :force
 
   def initialize(klass, force)
     @klass = klass
     @force = force
     @attrs = Set.new
-    @options = {}
+  end
+
+  def attr_names
+    attrs.map(&:name)
   end
 
   def add_attribute(attribute)
     @attrs.add(attribute)
   end
 
-  def add_options(options)
-    @options.merge!(options)
+  def forced_attributes
+    attrs.select { |attr| attr.validators.include? :force }
   end
 end
