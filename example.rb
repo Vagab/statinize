@@ -1,24 +1,23 @@
-require 'set'
-require 'pry'
-require_relative 'statinizable'
-require_relative 'validator'
-require_relative 'type_validator'
-require_relative 'presence_validator'
-require_relative 'attribute'
-require_relative 'errors'
-require_relative 'statinizer'
+require_relative 'lib/statinize'
 
 class ExampleClass
-  include Statinizable
+  include Statinize::Statinizable
 
   statinize do
-    attributes :first_name, :last_name, type: String
-    attributes :age, type: Integer, presence: true
+    attributes :first_name, :last_name, type: String, force: true
+    attributes :age, presence: true
+  end
+
+  def initialize(welcome_message = 'yolo')
+    # puts welcome_message
   end
 end
 
-example1 = ExampleClass.new(first_name: 'a', last_name: 'b', age: :a)
-pp example1.valid? # => false
+begin
+  ExampleClass.new(last_name: 1)
+rescue Statinize::ValidationError => e
+  puts e.message
+end
 
 example2 = ExampleClass.new(first_name: 'a', last_name: 'b')
 pp example2.valid? # => false
@@ -28,7 +27,7 @@ pp example3.valid? # => true
 
 # Another example
 class AnotherExampleClass
-  include Statinizable
+  include Statinize::Statinizable
 
   # will raise an error now
   statinize(force: true) do
@@ -38,6 +37,6 @@ end
 
 begin
   AnotherExampleClass.new
-rescue ValidationError => e
+rescue Statinize::ValidationError => e
   puts e.message
 end
