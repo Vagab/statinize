@@ -1,6 +1,7 @@
 require 'set'
 require 'pry'
 require_relative 'statinize/validator'
+require_relative 'statinize/caster'
 require_relative 'statinize/errors'
 require_relative 'statinize/validators/type_validator'
 require_relative 'statinize/validators/presence_validator'

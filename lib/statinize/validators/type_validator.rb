@@ -5,7 +5,7 @@ module Statinize
     end
 
     def error
-      { attr_name => "is not a #{validator_value}" }
+      { attr_name => "should be #{validator_value}, found #{attr_value.class} instead" }
     end
   end
 end

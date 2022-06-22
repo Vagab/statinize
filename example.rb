@@ -7,10 +7,6 @@ class ExampleClass
     attributes :first_name, :last_name, type: String, force: true
     attributes :age, presence: true
   end
-
-  def initialize(welcome_message = 'yolo')
-    # puts welcome_message
-  end
 end
 
 begin

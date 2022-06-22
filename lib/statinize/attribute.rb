@@ -1,25 +1,40 @@
-class Attribute
-  attr_reader :klass, :name, :options, :validators
+module Statinize
+  class Attribute
+    include Comparable
 
-  def initialize(klass, name, options)
-    @klass = klass
-    @name = name
-    @options = options
-    @validators = options.keys
-  end
+    attr_reader :klass, :name, :options, :validators
 
-  def self.create(klass, name, options)
-    new(klass, name, options).create
-  end
+    def initialize(klass, name, options)
+      @klass = klass
+      @name = name
+      @options = options
+      @validators = options.keys
+    end
 
-  def create
-    statinizer.add_attribute(self)
-    klass.send(:attr_accessor, name)
-  end
+    def self.create(klass, name, options)
+      new(klass, name, options).create
+    end
 
-  private
+    def create
+      statinizer.add_attribute(self) unless attribute_exists?
+      klass.send(:attr_accessor, name)
+      self
+    end
 
-  def statinizer
-    klass.statinizer
+    def <=>(other)
+      name == other.name &&
+        options == other.options &&
+        klass == other.klass
+    end
+
+    private
+
+    def statinizer
+      klass.statinizer
+    end
+
+    def attribute_exists?
+      statinizer.attribute_exists?(self)
+    end
   end
 end
