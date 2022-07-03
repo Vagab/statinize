@@ -1,11 +1,20 @@
 require_relative "lib/statinize"
 
+Statinize::Statinizer.configure do |config|
+  # Every class by default will raise an error
+  config.force = true
+end
+
 class ExampleClass
   include Statinize::Statinizable
 
   statinize do
+    # Won't raise an error
+    force false
     attribute :first_name, :last_name, type: String, force: true
-    attribute :age, presence: true
+
+    # Will attempt to cast age to integer. Will raise an error if fails
+    attribute :age, presence: true, type: Integer, cast: true
   end
 end
 
@@ -18,15 +27,14 @@ end
 example2 = ExampleClass.new(first_name: "a", last_name: "b")
 pp example2.valid? # => false
 
-example3 = ExampleClass.new(first_name: "a", last_name: "b", age: 1)
+example3 = ExampleClass.new(first_name: "a", last_name: "b", age: "1")
 pp example3.valid? # => true
 
 # Another example
 class AnotherExampleClass
   include Statinize::Statinizable
 
-  # will raise an error now
-  statinize(force: true) do
+  statinize do
     attribute :age, presence: true
   end
 end

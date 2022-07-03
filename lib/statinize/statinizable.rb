@@ -32,8 +32,8 @@ module Statinize
     end
 
     module ClassMethods
-      def statinize(force: false, &block)
-        @statinizer = Statinizer.new(self, force)
+      def statinize(&block)
+        @statinizer = Statinizer.new(self)
 
         class_eval do
           def self.statinizer

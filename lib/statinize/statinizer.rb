@@ -1,11 +1,23 @@
 module Statinize
   class Statinizer
-    attr_reader :attrs, :force, :klass
+    attr_reader :attrs, :klass
 
-    def initialize(klass, force)
+    def self.configure(&block)
+      Statinize::Configuration.configure(&block)
+    end
+
+    def initialize(klass)
       @klass = klass
-      @force = force
       @attrs = Set.new
+      @force = config.force
+    end
+
+    def config
+      @config ||= Statinize::Configuration.instance
+    end
+
+    def force(force = nil)
+      force.nil? ? @force : @force = force
     end
 
     def attribute(*attrs, **options)
