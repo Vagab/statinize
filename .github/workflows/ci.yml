@@ -25,17 +25,6 @@ jobs:
       - name: Rspec
         run: bundle exec rspec -f d
 
-  brakeman:
-    name: Brakeman
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: ruby/setup-ruby@v1
-        with:
-          bundler-cache: true
-      - name: Brakeman
-        run: bundle exec brakeman --no-exit-on-war
-
   rubocop:
     name: Rubocop
     runs-on: ubuntu-latest
