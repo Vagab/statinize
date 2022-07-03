@@ -9,7 +9,7 @@ module Statinize
     end
 
     def error
-      { attr_name => 'is blank' }
+      { attr_name => "is blank" }
     end
 
     private
@@ -23,7 +23,7 @@ module Statinize
     end
 
     def empty_string?
-      attr_value == ''
+      attr_value == ""
     end
   end
 end

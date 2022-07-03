@@ -1,11 +1,17 @@
 module Statinize
   class Statinizer
-    attr_reader :attrs, :force
+    attr_reader :attrs, :force, :klass
 
     def initialize(klass, force)
       @klass = klass
       @force = force
       @attrs = Set.new
+    end
+
+    def attribute(*attrs, **options)
+      attrs.each do |attr|
+        Attribute.create(klass, attr, options)
+      end
     end
 
     def add_attribute(attribute)

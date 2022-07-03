@@ -33,7 +33,7 @@ module Statinize
 
     module ClassMethods
       def statinize(force: false, &block)
-        instance_variable_set('@statinizer', Statinizer.new(self, force))
+        @statinizer = Statinizer.new(self, force)
 
         class_eval do
           def self.statinizer
@@ -41,13 +41,7 @@ module Statinize
           end
         end
 
-        block.call
-      end
-
-      def attributes(*attrs, **options)
-        attrs.each do |attr|
-          Attribute.create(self, attr, options)
-        end
+        statinizer.instance_eval(&block)
       end
     end
   end
