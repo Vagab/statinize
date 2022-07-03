@@ -6,7 +6,7 @@ module Statinize
       @instance = instance
 
       raise NotStatinizableError unless instance&.class&.statinizer.is_a?(Statinizer)
-      raise NoSuchValidatorError unless validators_exist?
+      raise NoSuchValidatorError, "#{missing_validators.join(", ")} validators are missing" unless all_validators_exist?
 
       @errors = Errors.new
       @erroneous_attrs = Set.new
@@ -41,9 +41,9 @@ module Statinize
 
           attr_value = instance.public_send attr_name
 
-          validator_instance.instance_variable_set('@attr_name', attr_name)
-          validator_instance.instance_variable_set('@attr_value', attr_value)
-          validator_instance.instance_variable_set('@validator_value', validator_value)
+          validator_instance.instance_variable_set(:@attr_name, attr_name)
+          validator_instance.instance_variable_set(:@attr_value, attr_value)
+          validator_instance.instance_variable_set(:@validator_value, validator_value)
 
           next if validator_instance.valid?
           next if should_cast?(validator, attr_name) && casted?(attr_name, attr_value, validator_value)
@@ -92,12 +92,20 @@ module Statinize
 
     private
 
-    def validators_exist?
-      attrs
+    def all_validators_exist?
+      missing_validators.empty?
+    end
+
+    def validators
+      @validators ||= attrs
         .flat_map(&:validators).uniq
         .reject { |validator| NOT_VALIDATORS.include? validator }
         .map(&:to_s).map(&:capitalize)
-        .all? { |validator| Object.const_defined?("Statinize::#{validator}Validator") }
+    end
+
+    def missing_validators
+      validators
+        .reject { |validator| Object.const_defined?("Statinize::#{validator}Validator") }
     end
 
     def should_cast?(validator, attr_name)

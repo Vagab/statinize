@@ -8,7 +8,7 @@ module Statinize
       Rational => :to_r,
       Symbol => :to_sym,
       Enumerator => :to_enum,
-      Proc => :to_proc
+      Proc => :to_proc,
     }.freeze
 
     def initialize(instance, attr_name, attr_value, validator_value)
