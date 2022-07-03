@@ -1,6 +1,8 @@
 require "set"
 require "pry"
+require "singleton"
 require_relative "statinize/validator"
+require_relative "statinize/configuration"
 require_relative "statinize/caster"
 require_relative "statinize/errors"
 require_relative "statinize/validators/type_validator"

@@ -76,10 +76,15 @@ RSpec.describe Statinize do
   end
 end
 
+Statinize::Statinizer.configure do |config|
+  config.force = true
+end
+
 class ExampleClass
   include Statinize::Statinizable
 
   statinize do
+    force false
     attribute :first_name, :last_name, type: String, force: true
     attribute :age, type: Integer, presence: true, cast: true
   end
@@ -88,7 +93,7 @@ end
 class ExampleForcedClass
   include Statinize::Statinizable
 
-  statinize(force: true) do
+  statinize do
     attribute :first_name, :last_name, type: String
     attribute :age, type: Integer, presence: true
   end
