@@ -1,6 +1,6 @@
 Gem::Specification.new do |s|
   s.name        = "statinize"
-  s.version     = "0.0.1"
+  s.version     = "1.0.0"
   s.summary     = "Statinize!"
   s.description = "Statinization gem. Allows for creation of attributes for a class with a given type."
   s.authors     = ["Barseek"]
