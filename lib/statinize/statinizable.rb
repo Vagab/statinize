@@ -11,23 +11,20 @@ module Statinize
           instance_variable_set("@#{attr}", kwargs.delete(attr)) if kwargs.key?(attr)
         end
 
-        validator.validate
+        define_validation
+        validate!
 
         super(*args, **kwargs)
       end
 
-      def valid?
-        validator.valid?
+      def validation
+        @validation ||= Validation.new(statinizer, self)
       end
 
-      def errors
-        validator.errors
-      end
+      alias_method :define_validation, :validation
 
-      private
-
-      def validator
-        Validator.new(self)
+      def statinizer
+        self.class.statinizer
       end
     end
 
@@ -35,13 +32,13 @@ module Statinize
       def statinize(&block)
         @statinizer = Statinizer.new(self)
 
-        class_eval do
-          def self.statinizer
-            @statinizer
-          end
-        end
-
         statinizer.instance_eval(&block)
+
+        statinizer.check_validators_exist!
+      end
+
+      def statinizer
+        @statinizer
       end
     end
   end
