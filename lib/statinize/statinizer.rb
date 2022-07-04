@@ -33,12 +33,22 @@ module Statinize
       attrs.add(attribute)
     end
 
-    def attribute_exists?(attribute)
+    def attrs
+      @attrs ||= Set.new
+    end
+
+    def attribute?(attribute)
       attrs.include? attribute
     end
 
-    def attrs
-      @attrs ||= Set.new
+    def check_validators_exist!
+      raise NoSuchValidatorError unless all_validators_exist?
+    end
+
+    private
+
+    def all_validators_exist?
+      attrs.map { |attr| attr.send(:all_validators_exist?) }.all? { !!_1 }
     end
   end
 end

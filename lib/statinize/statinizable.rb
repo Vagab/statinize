@@ -12,7 +12,6 @@ module Statinize
         end
 
         define_validation
-
         validate!
 
         super(*args, **kwargs)
@@ -34,6 +33,8 @@ module Statinize
         @statinizer = Statinizer.new(self)
 
         statinizer.instance_eval(&block)
+
+        statinizer.check_validators_exist!
       end
 
       def statinizer

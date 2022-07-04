@@ -15,7 +15,7 @@ module Statinize
     end
 
     def create
-      statinizer.add_attribute(self) unless attribute_exists?
+      statinizer.add_attribute(self) unless attribute?
       klass.send(:attr_accessor, name)
       self
     end
@@ -35,8 +35,7 @@ module Statinize
     end
 
     def validators
-      @validators ||= actual_validators
-        .select { |k, _| Object.const_defined? "Statinize::#{k}Validator" }
+      @validators ||= existing_validators
         .transform_keys { |k| Object.const_get("Statinize::#{k}Validator") }
     end
 
@@ -50,12 +49,22 @@ module Statinize
         .transform_keys { |validator| validator.to_s.capitalize }
     end
 
+    def existing_validators
+      actual_validators
+        .select { |k, _| Object.const_defined? "Statinize::#{k}Validator" }
+    end
+
+    def all_validators_exist?
+      actual_validators
+        .all? { |k, _| Object.const_defined? "Statinize::#{k}Validator" }
+    end
+
     def statinizer
       klass.statinizer
     end
 
-    def attribute_exists?
-      statinizer.attribute_exists?(self)
+    def attribute?
+      statinizer.attribute?(self)
     end
   end
 end

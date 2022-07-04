@@ -1,11 +1,7 @@
 module Statinize
-  class NotStatinizableError < StandardError; end
-
   class ValidationError < StandardError; end
 
   class NoSuchValidatorError < StandardError; end
-
-  class UncastableAttributeError < StandardError; end
 
   class Errors < Array
     def to_s
