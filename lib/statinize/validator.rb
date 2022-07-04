@@ -1,6 +1,6 @@
 module Statinize
   class Validator
-    NOT_VALIDATORS = %i[cast force].freeze
+    NOT_VALIDATORS = %i[force cast]
 
     attr_accessor :attr_name, :attr_value, :validator_value
 

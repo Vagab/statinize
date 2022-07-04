@@ -1,5 +1,7 @@
 module Statinize
   class Validation
+    INSTANCE_METHODS = %i[validate validate! valid? invalid? errors]
+
     attr_reader :statinizer, :instance
 
     def initialize(statinizer, instance)
@@ -74,7 +76,7 @@ module Statinize
     end
 
     def define_instance_methods
-      %i[validate! validate valid? invalid? errors].each do |meth|
+      INSTANCE_METHODS.each do |meth|
         instance.class.class_eval <<-RUBY_EVAL, __FILE__, __LINE__ + 1
           def #{meth}
             validation.#{meth}
