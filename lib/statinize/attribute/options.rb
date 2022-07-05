@@ -1,7 +1,17 @@
 module Statinize
   class Attribute
-    class Options < Hash
-      include Comparable
+    module Options
+      def self.extended(instance)
+        raise "Cannot extend #{instance}" unless instance.is_a? Hash
+
+        instance.transform_values! do |value|
+          if %i[if unless].include?(instance.key(value))
+            Conditions.new(Array(value))
+          else
+            value
+          end
+        end
+      end
 
       def validators
         @validators ||= defined_validators
@@ -19,6 +29,18 @@ module Statinize
 
       def should_force?
         key? :force
+      end
+
+      def should_validate?(instance)
+        return false if validators.empty?
+
+        if !key?(:unless) && !key?(:if)
+          true
+        elsif key?(:unless) && !self[:unless].falsey?(instance)
+          false
+        else
+          (key?(:if) && self[:if].truthy?(instance))
+        end
       end
 
       private

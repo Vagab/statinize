@@ -40,16 +40,18 @@ module Statinize
 
     def fill_errors
       attributes.each do |attr|
+        next unless attr.options.should_validate?(instance)
+
         attr_value = instance.public_send(attr.name)
 
         attr.options.validators.each do |validator_class, validator_value|
-          validator_instance = validator_class.new(attr.name, attr_value, validator_value)
+          validator_instance = validator_class.new(attr_value, validator_value)
 
           next if validator_instance.valid?
           next if validator_class == TypeValidator && cast(attr)
 
           erroneous_attributes.add(attr)
-          @errors << validator_instance.error
+          @errors << { attr.name => validator_instance.error }
         end
       end
     end
@@ -61,9 +63,9 @@ module Statinize
     end
 
     def should_raise?
-      return true if statinizer.force?
+      return false if valid?
 
-      invalid? &&
+      statinizer.force? ||
         erroneous_attributes.intersect?(attributes.select { |a| a.options.should_force? })
     end
 

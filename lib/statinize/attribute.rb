@@ -7,7 +7,7 @@ module Statinize
     def initialize(klass, name, options)
       @klass = klass
       @name = name
-      @options = Attribute::Options.new.merge(options)
+      @options = options.clone.extend(Options)
     end
 
     def self.create(klass, name, options)
@@ -18,6 +18,10 @@ module Statinize
       statinizer.add_attribute(self) unless attribute?
       klass.send(:attr_accessor, name)
       self
+    end
+
+    def add_options(opts)
+      options.merge! opts.extend(Options)
     end
 
     def <=>(other)

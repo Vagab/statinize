@@ -16,7 +16,7 @@ module Statinize
     def validate(*attrs, **options)
       attrs.each do |attr|
         attribute = attributes.find { _1.name == attr }
-        attribute.options.merge!(options)
+        attribute.add_options(options)
       end
     end
 
@@ -49,12 +49,12 @@ module Statinize
     end
 
     def check_validators_exist!
-      raise NoSuchValidatorError unless all_validators_exist?
+      raise NoSuchValidatorError unless all_validators_defined?
     end
 
     private
 
-    def all_validators_exist?
+    def all_validators_defined?
       attributes.map { |attr| attr.options.all_validators_defined? }.all? { !!_1 }
     end
   end

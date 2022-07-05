@@ -36,15 +36,15 @@ class AnotherExampleClass
 
   statinize do
     attribute :age
-    attribute :first_name
-    validate :age, presence: true, if: -> { first_name == "a" }
-    validate :age, type: Integer, presence: true, if: -> { first_name == "b" }
+    attribute :first_name, :last_name
+    validate :age, presence: true, if: -> { first_name == "aa" }, unless: -> { last_name == "b" }
+    # validate :age, type: Integer, presence: true, if: -> { first_name == "b" }
     # [{type: Integer, presence: true , if: proc}, {presence: true, if: proc}]
   end
 end
 
-# begin
-#   AnotherExampleClass.new
-# rescue Statinize::ValidationError => e
-#   puts e.message
-# end
+begin
+  AnotherExampleClass.new(first_name: "aa", last_name: "b")
+rescue Statinize::ValidationError => e
+  puts e.message
+end

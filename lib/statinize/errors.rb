@@ -3,6 +3,8 @@ module Statinize
 
   class NoSuchValidatorError < StandardError; end
 
+  class InvalidConditionError < StandardError; end
+
   class Errors < Array
     def to_s
       nice_errors = map do |i|

@@ -34,7 +34,7 @@ module Statinize
 
         statinizer.instance_eval(&block)
 
-        statinizer.check_validators_exist!
+        # statinizer.check_validators_exist!
       end
 
       def statinizer

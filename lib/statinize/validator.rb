@@ -2,10 +2,9 @@ module Statinize
   class Validator
     NOT_VALIDATORS = %i[force cast if unless]
 
-    attr_accessor :attr_name, :attr_value, :validator_value
+    attr_accessor :attr_value, :validator_value
 
-    def initialize(attr_name, attr_value, validator_value)
-      @attr_name = attr_name
+    def initialize(attr_value, validator_value)
       @attr_value = attr_value
       @validator_value = validator_value
     end
