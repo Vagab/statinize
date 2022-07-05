@@ -13,7 +13,7 @@ module Statinize
 
     def validate
       @errors = Errors.new
-      @erroneous_attrs = Set.new
+      @erroneous_attributes = Set.new
 
       fill_errors
     end
@@ -39,16 +39,16 @@ module Statinize
     private
 
     def fill_errors
-      attrs.each do |attr|
+      attributes.each do |attr|
         attr_value = instance.public_send(attr.name)
 
-        attr.validators.each do |validator_class, validator_value|
+        attr.options.validators.each do |validator_class, validator_value|
           validator_instance = validator_class.new(attr.name, attr_value, validator_value)
 
           next if validator_instance.valid?
           next if validator_class == TypeValidator && cast(attr)
 
-          erroneous_attrs.add(attr)
+          erroneous_attributes.add(attr)
           @errors << validator_instance.error
         end
       end
@@ -57,22 +57,22 @@ module Statinize
     def cast(attr)
       caster = Caster.new(instance, attr)
 
-      attr.should_cast? && caster.cast
+      attr.options.should_cast? && caster.cast
     end
 
     def should_raise?
       return true if statinizer.force?
 
       invalid? &&
-        erroneous_attrs.intersect?(attrs.select(&:should_force?))
+        erroneous_attributes.intersect?(attributes.select { |a| a.options.should_force? })
     end
 
-    def erroneous_attrs
-      @erroneous_attrs ||= Set.new
+    def erroneous_attributes
+      @erroneous_attributes ||= Set.new
     end
 
-    def attrs
-      statinizer.attrs
+    def attributes
+      statinizer.attributes
     end
 
     def define_instance_methods

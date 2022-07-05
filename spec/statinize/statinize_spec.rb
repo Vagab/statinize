@@ -16,7 +16,7 @@ RSpec.describe Statinize do
   end
 
   describe "attributes" do
-    let!(:attributes) { ExampleClass.statinizer.attrs }
+    let!(:attributes) { ExampleClass.statinizer.attributes }
 
     it "assigns attributes to statinizer" do
       expect(attributes.map(&:class).uniq.first).to eq Statinize::Attribute
@@ -94,7 +94,10 @@ class ExampleForcedClass
   include Statinize::Statinizable
 
   statinize do
-    attribute :first_name, :last_name, type: String
-    attribute :age, type: Integer, presence: true
+    attribute :first_name, :last_name
+    attribute :age
+
+    validate :first_name, :last_name, type: String
+    validate :age, type: Integer, presence: true
   end
 end
