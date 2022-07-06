@@ -8,7 +8,7 @@ module Statinize
       @klass = klass
       @name = name
       @options = OptionsCollection.new
-      @options << opts.clone.extend(Options)
+      @options << opts.clone.extend(Options) unless opts.empty?
     end
 
     def self.create(klass, name, opts)
