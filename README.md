@@ -1,3 +1,6 @@
+[![Code Quality Score](https://api.codiga.io/project/33992/score/svg)](https://app.codiga.io/hub/project/33992/statinize)
+[![Code Grade](https://api.codiga.io/project/33992/status/svg)](https://app.codiga.io/hub/project/33992/statinize)
+
 # Statinize
 
 Make ruby objects great again!
