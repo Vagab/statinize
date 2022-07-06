@@ -1,6 +1,8 @@
+version = File.read(File.expand_path("VERSION", __dir__)).strip
+
 Gem::Specification.new do |s|
   s.name        = "statinize"
-  s.version     = "1.0.0"
+  s.version     = version
   s.summary     = "Statinize!"
   s.description = "Statinization gem. Allows for creation of attributes for a class with a given type."
   s.authors     = ["Barseek"]
