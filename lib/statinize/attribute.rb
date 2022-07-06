@@ -17,7 +17,17 @@ module Statinize
 
     def create
       statinizer.add_attribute(self) unless attribute?
-      klass.send(:attr_accessor, name)
+      klass.class_eval <<-RUBY_EVAL, __FILE__, __LINE__ + 1
+        def #{name}
+          @#{name}
+        end
+
+        def #{name}=(attr)
+          @#{name} = attr
+          validate if respond_to?(:validate)
+          attr
+        end
+      RUBY_EVAL
       self
     end
 
