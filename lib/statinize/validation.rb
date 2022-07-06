@@ -13,8 +13,8 @@ module Statinize
 
     def validate
       @errors = Errors.new
-      @erroneous_attributes = Set.new
-      @erroneous_forced_attributes = Set.new
+      @erroneous_attributes = Hash.new { |h, k| h[k] = [] }
+      @erroneous_forced_attributes = Hash.new { |h, k| h[k] = [] }
 
       fill_errors
     end
@@ -48,8 +48,11 @@ module Statinize
             next if validator_instance.valid?
             next if validator_class == TypeValidator && cast(attr, option)
 
-            erroneous_attributes.add(attr)
-            erroneous_forced_attributes.add(attr) if option[:force]
+            force = option[:force] ||
+              (statinizer.force? && option[:force].nil?)
+
+            erroneous_attributes[attr.name] << option
+            erroneous_forced_attributes[attr.name] << option if force
             @errors << { attr.name => validator_instance.error }
           end
         end
@@ -65,8 +68,7 @@ module Statinize
     def should_raise?
       return false if valid?
 
-      statinizer.force? ||
-        erroneous_attributes.intersect?(erroneous_forced_attributes)
+      erroneous_attributes.keys.intersect?(erroneous_forced_attributes.keys)
     end
 
     def attributes
