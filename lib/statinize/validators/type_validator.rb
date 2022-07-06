@@ -1,7 +1,7 @@
 module Statinize
   class TypeValidator < Validator
     def valid?
-      attr_value.is_a?(validator_value) || attr_value.nil?
+      attr_value.is_a?(validator_value)
     end
 
     def error
