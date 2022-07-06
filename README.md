@@ -34,7 +34,7 @@ e3 = Example.new(name: "a")
 e3.valid? # => true
 ```
 
-And more stuff like this. Here is an example from the repo until I decided to have a proper documentation:
+And more stuff like this. Here is an example from the repo until I decide to have a proper documentation:
 ```ruby
 Statinize::Statinizer.configure do |config|
   # Every class by default will raise an error
