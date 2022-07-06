@@ -13,6 +13,13 @@ module Statinize
       end
     end
 
+    def validate(*attrs, **options)
+      attrs.each do |attr|
+        attribute = attributes.find { _1.name == attr }
+        attribute&.add_options(options)
+      end
+    end
+
     def force(force = nil)
       force.nil? ? @force : @force = force
     end
@@ -30,25 +37,25 @@ module Statinize
     end
 
     def add_attribute(attribute)
-      attrs.add(attribute)
+      attributes.add(attribute)
     end
 
-    def attrs
-      @attrs ||= Set.new
+    def attributes
+      @attributes ||= Set.new
     end
 
     def attribute?(attribute)
-      attrs.include? attribute
+      attributes.include? attribute
     end
 
     def check_validators_exist!
-      raise NoSuchValidatorError unless all_validators_exist?
+      raise NoSuchValidatorError unless all_validators_defined?
     end
 
     private
 
-    def all_validators_exist?
-      attrs.map { |attr| attr.send(:all_validators_exist?) }.all? { !!_1 }
+    def all_validators_defined?
+      attributes.map { |attr| attr.options.all_validators_defined? }.all? { !!_1 }
     end
   end
 end

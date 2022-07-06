@@ -2,7 +2,7 @@ module Statinize
   class Validation
     INSTANCE_METHODS = %i[validate validate! valid? invalid? errors]
 
-    attr_reader :statinizer, :instance
+    attr_reader :statinizer, :instance, :errors
 
     def initialize(statinizer, instance)
       @statinizer = statinizer
@@ -13,7 +13,8 @@ module Statinize
 
     def validate
       @errors = Errors.new
-      @erroneous_attrs = Set.new
+      @erroneous_attributes = Set.new
+      @erroneous_forced_attributes = Set.new
 
       fill_errors
     end
@@ -32,47 +33,44 @@ module Statinize
       !valid?
     end
 
-    def errors
-      @errors ||= Errors.new
-    end
-
     private
 
     def fill_errors
-      attrs.each do |attr|
-        attr_value = instance.public_send(attr.name)
+      attributes.each do |attr|
+        attr.options.each do |option|
+          next unless option.should_validate?(instance)
 
-        attr.validators.each do |validator_class, validator_value|
-          validator_instance = validator_class.new(attr.name, attr_value, validator_value)
+          attr_value = instance.public_send(attr.name)
 
-          next if validator_instance.valid?
-          next if validator_class == TypeValidator && cast(attr)
+          option.validators.each do |validator_class, validator_value|
+            validator_instance = validator_class.new(attr_value, validator_value)
 
-          erroneous_attrs.add(attr)
-          @errors << validator_instance.error
+            next if validator_instance.valid?
+            next if validator_class == TypeValidator && cast(attr, option)
+
+            erroneous_attributes.add(attr)
+            erroneous_forced_attributes.add(attr) if option[:force]
+            @errors << { attr.name => validator_instance.error }
+          end
         end
       end
     end
 
-    def cast(attr)
-      caster = Caster.new(instance, attr)
+    def cast(attr, option)
+      caster = Caster.new(instance, attr, option)
 
-      attr.should_cast? && caster.cast
+      option.should_cast? && caster.cast
     end
 
     def should_raise?
-      return true if statinizer.force?
+      return false if valid?
 
-      invalid? &&
-        erroneous_attrs.intersect?(attrs.select(&:should_force?))
+      statinizer.force? ||
+        erroneous_attributes.intersect?(erroneous_forced_attributes)
     end
 
-    def erroneous_attrs
-      @erroneous_attrs ||= Set.new
-    end
-
-    def attrs
-      statinizer.attrs
+    def attributes
+      statinizer.attributes
     end
 
     def define_instance_methods
@@ -84,5 +82,7 @@ module Statinize
         RUBY_EVAL
       end
     end
+
+    attr_reader :erroneous_attributes, :erroneous_forced_attributes
   end
 end

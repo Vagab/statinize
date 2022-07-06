@@ -9,7 +9,7 @@ module Statinize
     end
 
     def error
-      { attr_name => "is blank" }
+      "is blank"
     end
 
     private

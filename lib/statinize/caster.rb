@@ -11,11 +11,11 @@ module Statinize
       Proc => :to_proc,
     }.freeze
 
-    def initialize(instance, attr)
+    def initialize(instance, attr, option)
       @instance = instance
       @attr_name = attr.name
       @attr_value = instance.public_send(attr_name)
-      @validator_value = attr.options[:type]
+      @validator_value = option[:type]
     end
 
     def cast
