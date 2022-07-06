@@ -16,7 +16,7 @@ module Statinize
     def validate(*attrs, **options)
       attrs.each do |attr|
         attribute = attributes.find { _1.name == attr }
-        attribute.add_options(options)
+        attribute&.add_options(options)
       end
     end
 

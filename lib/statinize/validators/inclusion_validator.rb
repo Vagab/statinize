@@ -5,7 +5,7 @@ module Statinize
     end
 
     def error
-      "should be one of #{validator_value.join(", ")}, got #{attr_value} instead"
+      "should be one of #{validator_value.join(", ")}"
     end
   end
 end

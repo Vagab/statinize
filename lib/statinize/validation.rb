@@ -40,37 +40,44 @@ module Statinize
 
     def fill_errors
       attributes.each do |attr|
-        next unless attr.options.should_validate?(instance)
+        attr.options.each do |option|
+          next unless option.should_validate?(instance)
 
-        attr_value = instance.public_send(attr.name)
+          attr_value = instance.public_send(attr.name)
 
-        attr.options.validators.each do |validator_class, validator_value|
-          validator_instance = validator_class.new(attr_value, validator_value)
+          option.validators.each do |validator_class, validator_value|
+            validator_instance = validator_class.new(attr_value, validator_value)
 
-          next if validator_instance.valid?
-          next if validator_class == TypeValidator && cast(attr)
+            next if validator_instance.valid?
+            next if validator_class == TypeValidator && cast(attr, option)
 
-          erroneous_attributes.add(attr)
-          @errors << { attr.name => validator_instance.error }
+            erroneous_attributes.add(attr)
+            erroneous_forced_attributes.add(attr) if option[:force]
+            @errors << { attr.name => validator_instance.error }
+          end
         end
       end
     end
 
-    def cast(attr)
-      caster = Caster.new(instance, attr)
+    def cast(attr, option)
+      caster = Caster.new(instance, attr, option)
 
-      attr.options.should_cast? && caster.cast
+      option.should_cast? && caster.cast
     end
 
     def should_raise?
       return false if valid?
 
       statinizer.force? ||
-        erroneous_attributes.intersect?(attributes.select { |a| a.options.should_force? })
+        erroneous_attributes.intersect?(erroneous_forced_attributes)
     end
 
     def erroneous_attributes
       @erroneous_attributes ||= Set.new
+    end
+
+    def erroneous_forced_attributes
+      @erroneous_forced_attributes ||= Set.new
     end
 
     def attributes

@@ -4,14 +4,15 @@ module Statinize
 
     attr_reader :klass, :name, :options
 
-    def initialize(klass, name, options)
+    def initialize(klass, name, opts)
       @klass = klass
       @name = name
-      @options = options.clone.extend(Options)
+      @options = OptionsCollection.new
+      @options << opts.clone.extend(Options)
     end
 
-    def self.create(klass, name, options)
-      new(klass, name, options).create
+    def self.create(klass, name, opts)
+      new(klass, name, opts).create
     end
 
     def create
@@ -21,7 +22,7 @@ module Statinize
     end
 
     def add_options(opts)
-      options.merge! opts.extend(Options)
+      options << opts.extend(Options)
     end
 
     def <=>(other)

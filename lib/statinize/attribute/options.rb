@@ -27,23 +27,23 @@ module Statinize
         key?(:type) && key?(:cast)
       end
 
-      def should_force?
-        key? :force
-      end
-
       def should_validate?(instance)
         return false if validators.empty?
+        return true unless key?(:unless) || key?(:if)
+        return false if key?(:unless) && !unless_passed?(instance)
 
-        if !key?(:unless) && !key?(:if)
-          true
-        elsif key?(:unless) && !self[:unless].falsey?(instance)
-          false
-        else
-          (key?(:if) && self[:if].truthy?(instance))
-        end
+        if_passed?(instance)
       end
 
       private
+
+      def unless_passed?(instance)
+        self[:unless].falsey?(instance)
+      end
+
+      def if_passed?(instance)
+        self[:if].truthy?(instance)
+      end
 
       def filtered_validators
         reject do |k, _|
