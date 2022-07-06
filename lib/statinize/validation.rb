@@ -2,7 +2,7 @@ module Statinize
   class Validation
     INSTANCE_METHODS = %i[validate validate! valid? invalid? errors]
 
-    attr_reader :statinizer, :instance
+    attr_reader :statinizer, :instance, :errors
 
     def initialize(statinizer, instance)
       @statinizer = statinizer
@@ -14,6 +14,7 @@ module Statinize
     def validate
       @errors = Errors.new
       @erroneous_attributes = Set.new
+      @erroneous_forced_attributes = Set.new
 
       fill_errors
     end
@@ -30,10 +31,6 @@ module Statinize
 
     def invalid?
       !valid?
-    end
-
-    def errors
-      @errors ||= Errors.new
     end
 
     private
@@ -72,14 +69,6 @@ module Statinize
         erroneous_attributes.intersect?(erroneous_forced_attributes)
     end
 
-    def erroneous_attributes
-      @erroneous_attributes ||= Set.new
-    end
-
-    def erroneous_forced_attributes
-      @erroneous_forced_attributes ||= Set.new
-    end
-
     def attributes
       statinizer.attributes
     end
@@ -93,5 +82,7 @@ module Statinize
         RUBY_EVAL
       end
     end
+
+    attr_reader :erroneous_attributes, :erroneous_forced_attributes
   end
 end
