@@ -9,8 +9,9 @@ module Statinize
       def initialize(*args, **kwargs, &block)
         if private_methods(false).include? :initialize
           super(*args, **kwargs, &block)
+          check_defined!(kwargs)
         else
-          self.class.statinizer.attributes.map(&:name).each do |attr|
+          statinizer.attributes.map(&:name).each do |attr|
             instance_variable_set("@#{attr}", kwargs[attr]) if kwargs.key?(attr)
           end
         end
@@ -27,6 +28,21 @@ module Statinize
 
       def statinizer
         self.class.statinizer
+      end
+
+      private
+
+      def check_defined!(kwargs)
+        undefined_attrs = []
+        statinizer.attributes.map(&:name).each do |attr|
+          undefined_attrs << attr if public_send(attr) != kwargs[attr] || !kwargs.key?(attr)
+        end
+
+        return if undefined_attrs.empty?
+
+        plural = undefined_attrs.size > 1
+
+        raise UndefinedAttribute, "#{undefined_attrs.join(", ")} #{plural ? "are" : "is"} not defined in initialize"
       end
     end
 
