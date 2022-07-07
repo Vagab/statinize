@@ -6,15 +6,17 @@ module Statinize
     end
 
     module PrependedMethods
-      def initialize(*args, **kwargs)
-        self.class.statinizer.attributes.map(&:name).each do |attr|
-          instance_variable_set("@#{attr}", kwargs.delete(attr)) if kwargs.key?(attr)
+      def initialize(*args, **kwargs, &block)
+        if private_methods(false).include? :initialize
+          super(*args, **kwargs, &block)
+        else
+          self.class.statinizer.attributes.map(&:name).each do |attr|
+            instance_variable_set("@#{attr}", kwargs[attr]) if kwargs.key?(attr)
+          end
         end
 
         define_validation
         validate!
-
-        super(*args, **kwargs)
       end
 
       def validation
@@ -34,7 +36,7 @@ module Statinize
 
         statinizer.instance_eval(&block)
 
-        # statinizer.check_validators_exist!
+        statinizer.check_validators_exist!
       end
 
       def statinizer
