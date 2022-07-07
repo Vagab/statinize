@@ -5,6 +5,8 @@ module Statinize
 
   class InvalidConditionError < StandardError; end
 
+  class UndefinedAttribute < StandardError; end
+
   class Errors < Array
     def to_s
       nice_errors = map do |i|
