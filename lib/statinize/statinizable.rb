@@ -37,7 +37,7 @@ module Statinize
           undefined_attrs << attr if public_send(attr) != kwargs[attr] || !kwargs.key?(attr)
         end
 
-        raise UndefinedAttributeError, "Not all attributes defined in statinize block are not defined in initialize"
+        raise UndefinedAttributeError, "Not all attributes defined in statinize block are defined in initialize"
       end
     end
 
