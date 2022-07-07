@@ -33,16 +33,11 @@ module Statinize
       private
 
       def check_defined!(kwargs)
-        undefined_attrs = []
         statinizer.attributes.map(&:name).each do |attr|
           undefined_attrs << attr if public_send(attr) != kwargs[attr] || !kwargs.key?(attr)
         end
 
-        return if undefined_attrs.empty?
-
-        plural = undefined_attrs.size > 1
-
-        raise UndefinedAttribute, "#{undefined_attrs.join(", ")} #{plural ? "are" : "is"} not defined in initialize"
+        raise UndefinedAttributeError, "Not all attributes defined in statinize block are not defined in initialize"
       end
     end
 
