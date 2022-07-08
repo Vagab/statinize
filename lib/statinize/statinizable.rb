@@ -24,6 +24,12 @@ module Statinize
         @validation ||= Validation.new(statinizer, self)
       end
 
+      def attributes
+        @attributes = Hash[
+          statinizer.attributes.map { |a| [a.name, public_send(a.name)] }
+        ]
+      end
+
       alias_method :define_validation, :validation
 
       def statinizer
