@@ -8,16 +8,12 @@ module Statinize
     end
 
     def attribute(*attrs, **options)
-      options.merge!(@with) if @with
-
       attrs.each do |attr|
         Attribute.create(klass, attr, options)
       end
     end
 
     def validate(*attrs, **options)
-      options.merge!(@with) if @with
-
       attrs.each do |attr|
         attribute = attributes.find { _1.name == attr }
         attribute&.add_options(options)
@@ -25,8 +21,19 @@ module Statinize
     end
 
     def with(**kwargs, &block)
-      @with = kwargs
+      trace = TracePoint.trace(:call) do |tp|
+        tp.disable
+
+        if %i[attribute validate].include? tp.method_id
+          tp.binding.local_variable_get(:options).merge!(kwargs)
+        end
+
+        tp.enable
+      end
+
+      trace.enable
       instance_exec(&block)
+      trace.disable
 
       remove_instance_variable(:@with) if @with
     end
