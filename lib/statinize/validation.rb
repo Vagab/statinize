@@ -13,8 +13,8 @@ module Statinize
 
     def validate
       @errors = Errors.new
-      @erroneous_attributes = Hash.new { |h, k| h[k] = [] }
-      @erroneous_forced_attributes = Hash.new { |h, k| h[k] = [] }
+      @erroneous_attributes = Hash.new { |h, k| h[k] = Set.new }
+      @erroneous_forced_attributes = Hash.new { |h, k| h[k] = Set.new }
 
       fill_errors
     end
@@ -51,8 +51,8 @@ module Statinize
             force = option[:force] ||
               (statinizer.force? && option[:force].nil?)
 
-            erroneous_attributes[attr.name] << option
-            erroneous_forced_attributes[attr.name] << option if force
+            erroneous_attributes[attr.name].add option
+            erroneous_forced_attributes[attr.name].add option if force
             @errors << { attr.name => validator_instance.error }
           end
         end

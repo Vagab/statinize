@@ -23,14 +23,14 @@ end
 begin
   ExampleClass.new(first_name: "a", last_name: "b")
 rescue Statinize::ValidationError => e
-  puts e.message # => ValidationError: ...
+  e.message # => ValidationError: ...
 end
 
 example2 = ExampleClass.new(first_name: "b", last_name: "a", age: 1)
-pp example2.valid? # => false
+example2.valid? # => false
 
 example3 = ExampleClass.new(first_name: "a", last_name: "c", age: "1")
-pp example3.valid? # => true
+example3.valid? # => true
 
 # Another example
 class AnotherExampleClass
@@ -51,14 +51,37 @@ end
 begin
   AnotherExampleClass.new(first_name: "aa", last_name: "CoolMatz")
 rescue Statinize::ValidationError => e
-  puts e.message # => ValidationError: ...
+  e.message # => ValidationError: ...
 end
 
 example2 = AnotherExampleClass.new(first_name: "aa", last_name: "b") # notice no age here
-pp example2.valid? # => true
+example2.valid? # => true
 
 begin
   AnotherExampleClass.new(first_name: "b", age: "1")
 rescue Statinize::ValidationError => e
   puts e.message # => ValidationError: ...
 end
+
+class ExampleBlockValidation
+  include Statinize::Statinizable
+
+  statinize do
+    force false
+    validate_with type: String, presence: true do
+      attribute :name, :email
+      attribute :password, :encrypted_password
+    end
+
+    attribute :age, presence: true
+
+    validate_with type: Symbol, presence: true, if: -> { age&.even? } do
+      attribute :type, :status
+    end
+  end
+end
+
+# I am too lazy to include more examples for this one, but it works.
+# Later it will all be documented
+
+ExampleBlockValidation.new.valid? # => false
