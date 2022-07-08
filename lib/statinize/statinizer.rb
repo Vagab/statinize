@@ -20,12 +20,12 @@ module Statinize
       end
     end
 
-    def with(**kwargs, &block)
+    def with(**options, &block)
       trace = TracePoint.trace(:call) do |tp|
         tp.disable
 
         if %i[attribute validate].include? tp.method_id
-          tp.binding.local_variable_get(:options).merge!(kwargs)
+          tp.binding.local_variable_get(:options).merge!(options)
         end
 
         tp.enable
@@ -34,8 +34,6 @@ module Statinize
       trace.enable
       instance_exec(&block)
       trace.disable
-
-      remove_instance_variable(:@with) if @with
     end
 
     def force(force = nil)
