@@ -54,7 +54,7 @@ rescue Statinize::ValidationError => e
   e.message # => ValidationError: ...
 end
 
-example2 = AnotherExampleClass.new(first_name: "aa", last_name: "b") # notice no age here
+example2 = AnotherExampleClass.new(first_name: "aa", last_name: "Matz") # notice no age here
 example2.valid? # => true
 
 begin
