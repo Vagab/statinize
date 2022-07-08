@@ -68,14 +68,16 @@ class ExampleBlockValidation
 
   statinize do
     force false
-    validate_with type: String, presence: true do
-      attribute :name, :email
+    attribute :name, :email
+
+    with type: String, presence: true do
       attribute :password, :encrypted_password
+      validate :name, :email, cast: true
     end
 
     attribute :age, presence: true
 
-    validate_with type: Symbol, presence: true, if: -> { age&.even? } do
+    with type: Symbol, presence: true, if: -> { age&.even? } do
       attribute :type, :status
     end
   end
