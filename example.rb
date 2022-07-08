@@ -60,7 +60,7 @@ example2.valid? # => true
 begin
   AnotherExampleClass.new(first_name: "b", age: "1")
 rescue Statinize::ValidationError => e
-  puts e.message # => ValidationError: ...
+  e.message # => ValidationError: ...
 end
 
 class ExampleBlockValidation
