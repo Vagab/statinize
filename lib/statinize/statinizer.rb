@@ -8,7 +8,7 @@ module Statinize
     end
 
     def attribute(*attrs, **options)
-      options.merge!(@validate_with) if @validate_with
+      options.merge!(@with) if @with
 
       attrs.each do |attr|
         Attribute.create(klass, attr, options)
@@ -16,17 +16,19 @@ module Statinize
     end
 
     def validate(*attrs, **options)
+      options.merge!(@with) if @with
+
       attrs.each do |attr|
         attribute = attributes.find { _1.name == attr }
         attribute&.add_options(options)
       end
     end
 
-    def validate_with(**kwargs, &block)
-      @validate_with = kwargs
+    def with(**kwargs, &block)
+      @with = kwargs
       instance_exec(&block)
 
-      remove_instance_variable(:@validate_with) if @validate_with
+      remove_instance_variable(:@with) if @with
     end
 
     def force(force = nil)
