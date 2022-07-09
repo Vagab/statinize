@@ -1,18 +1,18 @@
 module Statinize
   class Beforer
-    attr_accessor :hh
+    attr_reader :befored_attributes
 
     def initialize(klass)
-      @hh = {}
+      @befored_attributes = {}
       @klass = klass
     end
 
     def beforable?(attr)
-      @hh.include?(attr)
+      @befored_attributes.include?(attr)
     end
 
     def prework(attr_name, value)
-      @hh[attr_name]&.call(value)
+      @befored_attributes[attr_name]&.call(value)
     end
   end
 end

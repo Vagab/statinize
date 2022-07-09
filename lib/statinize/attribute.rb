@@ -9,7 +9,7 @@ module Statinize
       @name = name
       @options = OptionsCollection.new
       @options << opts.clone.extend(Options) unless opts.empty?
-      beforer.hh[name] = opts[:before] if opts.key?(:before)
+      beforer.befored_attributes[name] = opts[:before] if opts.key?(:before)
     end
 
     def self.create(klass, name, opts)
