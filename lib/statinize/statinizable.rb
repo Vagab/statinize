@@ -12,7 +12,11 @@ module Statinize
           check_defined!(kwargs)
         else
           statinizer.attributes.map(&:name).each do |attr|
-            instance_variable_set("@#{attr}", kwargs[attr]) if kwargs.key?(attr)
+            if beforable?(attr) && kwargs.key?(attr)
+              instance_variable_set("@#{attr}", prework(attr, kwargs[attr]))
+            else
+              instance_variable_set("@#{attr}", kwargs[attr]) if kwargs.key?(attr)
+            end
           end
         end
 
@@ -22,6 +26,14 @@ module Statinize
 
       def validation
         @validation ||= Validation.new(statinizer, self)
+      end
+
+      def beforable?(attr)
+        statinizer.beforer.beforable?(attr)
+      end
+
+      def prework(attr, value)
+        statinizer.beforer.prework(attr, value)
       end
 
       def attributes

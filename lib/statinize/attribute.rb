@@ -9,6 +9,7 @@ module Statinize
       @name = name
       @options = OptionsCollection.new
       @options << opts.clone.extend(Options) unless opts.empty?
+      beforer.hh[name] = opts[:before] if opts.key?(:before)
     end
 
     def self.create(klass, name, opts)
@@ -42,6 +43,10 @@ module Statinize
     end
 
     private
+
+    def beforer
+      statinizer.beforer
+    end
 
     def statinizer
       klass.statinizer

@@ -7,6 +7,8 @@ module Statinize
         instance.transform_values! do |value|
           if %i[if unless].include?(instance.key(value))
             Conditions.new(Array(value))
+          # elsif %i[before].include?(instance.key(value))
+          #   beforer
           else
             value
           end
