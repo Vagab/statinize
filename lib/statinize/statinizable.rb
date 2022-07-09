@@ -14,8 +14,8 @@ module Statinize
           statinizer.attributes.map(&:name).each do |attr|
             if beforable?(attr) && kwargs.key?(attr)
               instance_variable_set("@#{attr}", prework(attr, kwargs[attr]))
-            else
-              instance_variable_set("@#{attr}", kwargs[attr]) if kwargs.key?(attr)
+            elsif kwargs.key?(attr)
+              instance_variable_set("@#{attr}", kwargs[attr])
             end
           end
         end

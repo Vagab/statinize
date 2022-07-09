@@ -12,7 +12,7 @@ module Statinize
     end
 
     def prework(attr_name, value)
-      @hh[attr_name].call(value) if @hh[attr_name]
+      @hh[attr_name]&.call(value)
     end
   end
 end
