@@ -10,10 +10,10 @@ module Statinize
   class Errors < Array
     def to_s
       nice_errors = map do |i|
-        "#{i.keys.first.to_s.split("_").tap { |attr| attr.first.capitalize! }.join(" ")} #{i.values.first}"
-      end.join("; ")
+        ">>> #{i.keys.first.to_s.split("_").tap { |attr| attr.first.capitalize! }.join(" ")} #{i.values.first}"
+      end.join(";\n")
 
-      "ValidationError: #{nice_errors}"
+      "\nValidationError:\n#{nice_errors}"
     end
   end
 end

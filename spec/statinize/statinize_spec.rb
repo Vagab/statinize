@@ -52,9 +52,9 @@ RSpec.describe Statinize do
         it "raises an error with proper message" do
           expect { subject }.to raise_error(
             Statinize::ValidationError,
-            "ValidationError: " \
-              "First name should be String, found Integer instead; " \
-              "Last name should be String, found Integer instead"
+            "\nValidationError:\n" \
+              ">>> First name should be String, found Integer instead;\n" \
+              ">>> Last name should be String, found Integer instead"
           )
         end
       end
@@ -65,10 +65,10 @@ RSpec.describe Statinize do
         it "raises an error with proper message" do
           expect { subject }.to raise_error(
             Statinize::ValidationError,
-            "ValidationError: " \
-              "First name should be String, found Hash instead; " \
-              "Last name should be String, found Integer instead; " \
-              "Age should be Integer, found String instead"
+            "\nValidationError:\n" \
+              ">>> First name should be String, found Hash instead;\n" \
+              ">>> Last name should be String, found Integer instead;\n" \
+              ">>> Age should be Integer, found String instead"
           )
         end
       end
