@@ -51,9 +51,10 @@ module Statinize
             force = option[:force] ||
               (statinizer.force? && option[:force].nil?)
 
-            erroneous_attributes[attr.name].add option
+            if erroneous_attributes[attr.name].add? option
+              @errors << { attr.name => validator_instance.error }
+            end
             erroneous_forced_attributes[attr.name].add option if force
-            @errors << { attr.name => validator_instance.error }
           end
         end
       end
