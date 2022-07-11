@@ -11,12 +11,12 @@ class ExampleClass
   statinize do
     # Won't raise an error
     force false
-    attribute :first_name, :last_name, type: String
+    attribute :first_name, :last_name, type: String, before: proc { |name| name.capitalize! }
     validate :first_name, inclusion: ["haha"], force: true, if: -> { last_name == "b" }
     validate :first_name, inclusion: ["hehe"], if: -> { last_name == "a" }
 
     # Will attempt to cast age to integer. Will raise an error if fails
-    attribute :age, presence: true, type: Integer, cast: true
+    attribute :age, presence: true, type: Integer, cast: true, before: proc { |age| age * 2 }
   end
 end
 

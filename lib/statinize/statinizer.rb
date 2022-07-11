@@ -20,22 +20,6 @@ module Statinize
       end
     end
 
-    def with(**options, &block)
-      trace = TracePoint.trace(:call) do |tp|
-        tp.disable
-
-        if %i[attribute validate].include? tp.method_id
-          tp.binding.local_variable_get(:options).merge!(options)
-        end
-
-        tp.enable
-      end
-
-      trace.enable
-      instance_exec(&block)
-      trace.disable
-    end
-
     def force(force = nil)
       force.nil? ? @force : @force = force
     end
@@ -58,6 +42,10 @@ module Statinize
 
     def attributes
       @attributes ||= Set.new
+    end
+
+    def beforer
+      @beforer ||= Beforer.new(klass)
     end
 
     def attribute?(attribute)
