@@ -16,7 +16,8 @@ RSpec.describe "Conditional Validation" do
           it "raises an error" do
             expect { subject }.to raise_error(
               Statinize::ValidationError,
-              "ValidationError: Entity should be String, found Symbol instead"
+              "\nValidationError:\n" \
+                ">>> Entity should be String, found Symbol instead"
             )
           end
         end
@@ -44,7 +45,8 @@ RSpec.describe "Conditional Validation" do
       it { is_expected.to_not be_valid }
       it "has a proper error message" do
         expect(subject.errors.to_s).to eq(
-          "ValidationError: Name should be one of hehe"
+          "\nValidationError:\n" \
+            ">>> Name should be one of hehe"
         )
       end
     end
@@ -55,7 +57,8 @@ RSpec.describe "Conditional Validation" do
       it { is_expected.to_not be_valid }
       it "has a proper error message" do
         expect(subject.errors.to_s).to eq(
-          "ValidationError: Name should be one of hoho"
+          "\nValidationError:\n" \
+            ">>> Name should be one of hoho"
         )
       end
     end
@@ -79,7 +82,8 @@ RSpec.describe "Conditional Validation" do
         it { is_expected.to_not be_valid }
         it "has a proper error message" do
           expect(subject.errors.to_s).to eq(
-            "ValidationError: Name should be one of haha"
+            "\nValidationError:\n" \
+              ">>> Name should be one of haha"
           )
         end
       end
