@@ -7,12 +7,14 @@ module Statinize
 
     module PrependedMethods
       def initialize(*args, **kwargs, &block)
+        symbolized = kwargs.transform_keys(&:to_sym)
+
         if private_methods(false).include? :initialize
           super(*args, **kwargs, &block)
-          check_defined!(kwargs)
+          check_defined!(symbolized)
         else
           statinizer.attributes.map(&:name).each do |attr|
-            instance_variable_set("@#{attr}", kwargs[attr]) if kwargs.key?(attr)
+            instance_variable_set("@#{attr}", symbolized[attr]) if symbolized.key?(attr)
           end
         end
 
