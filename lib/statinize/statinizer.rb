@@ -9,31 +9,44 @@ module Statinize
 
     def attribute(*attrs, **options)
       attrs.each do |attr|
-        Attribute.create(klass, attr, options)
+        Attribute.create(klass, attr, options) unless attribute? attr
       end
     end
 
     def validate(*attrs, **options)
       attrs.each do |attr|
         attribute = attributes.find { _1.name == attr }
-        attribute&.add_options(options)
+        attribute = Attribute.create(klass, attr) unless attribute
+        attribute.add_options(options)
       end
     end
 
     def with(**options, &block)
-      trace = TracePoint.trace(:call) do |tp|
-        tp.disable
+      instance = self.class.new(klass)
+      instance.force(force)
 
-        if %i[attribute validate].include? tp.method_id
-          tp.binding.local_variable_get(:options).merge!(options)
-        end
+      klass.instance_variable_set(:@statinizer, instance)
+      instance.instance_exec(&block)
+      klass.instance_variable_set(:@statinizer, self)
 
-        tp.enable
+      instance.merge_options!(**options)
+
+      populate!(instance.attributes)
+    end
+
+    def merge_options!(**options)
+      attributes.each do |attribute|
+        attribute.add_options(options)
       end
+    end
 
-      trace.enable
-      instance_exec(&block)
-      trace.disable
+    def populate!(attrs)
+      attrs.each do |attr|
+        attribute attr.name
+        attributes
+          .find { _1.name == attr.name }
+          .options = attr.options.clone
+      end
     end
 
     def force(force = nil)
@@ -53,7 +66,7 @@ module Statinize
     end
 
     def add_attribute(attribute)
-      attributes.add(attribute)
+      attributes.add?(attribute)
     end
 
     def attributes
@@ -61,7 +74,7 @@ module Statinize
     end
 
     def attribute?(attribute)
-      attributes.include? attribute
+      attributes.map(&:name).include? attribute.name
     end
 
     def check_validators_exist!

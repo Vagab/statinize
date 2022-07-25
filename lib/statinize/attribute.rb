@@ -2,7 +2,8 @@ module Statinize
   class Attribute
     include Comparable
 
-    attr_reader :klass, :name, :options
+    attr_reader :klass, :name
+    attr_accessor :options
 
     def initialize(klass, name, opts)
       @klass = klass
@@ -11,7 +12,7 @@ module Statinize
       @options << opts.clone.extend(Options) unless opts.empty?
     end
 
-    def self.create(klass, name, opts)
+    def self.create(klass, name, opts = {})
       new(klass, name, opts).create
     end
 
