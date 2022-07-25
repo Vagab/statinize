@@ -34,21 +34,6 @@ module Statinize
       populate!(instance.attributes)
     end
 
-    def merge_options!(**options)
-      attributes.each do |attribute|
-        attribute.add_options(options)
-      end
-    end
-
-    def populate!(attrs)
-      attrs.each do |attr|
-        attribute attr.name
-        attributes
-          .find { _1.name == attr.name }
-          .options = attr.options.clone
-      end
-    end
-
     def force(force = nil)
       force.nil? ? @force : @force = force
     end
@@ -82,6 +67,21 @@ module Statinize
     end
 
     private
+
+    def merge_options!(**options)
+      attributes.each do |attribute|
+        attribute.add_options(options)
+      end
+    end
+
+    def populate!(attrs)
+      attrs.each do |attr|
+        attribute attr.name
+        attributes
+          .find { _1.name == attr.name }
+          .options = attr.options.clone
+      end
+    end
 
     def all_validators_defined?
       attributes.map { |attr| attr.options.all_validators_defined? }.all? { !!_1 }
