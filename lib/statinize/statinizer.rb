@@ -68,13 +68,13 @@ module Statinize
 
     private
 
-    def merge_options!(**options)
+    def merge_options(**options)
       attributes.each do |attribute|
         attribute.add_options(options)
       end
     end
 
-    def populate!(attrs)
+    def populate(attrs)
       attrs.each do |attr|
         attribute attr.name
         attributes
