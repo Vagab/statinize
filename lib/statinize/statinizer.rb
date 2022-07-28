@@ -30,6 +30,19 @@ module Statinize
       @attributes ||= Set.new
     end
 
+    def run_before_callbacks(instance)
+      before_callbacks.each do |callback|
+        instance.instance_exec(&callback) if callback.is_a? Proc
+
+        next unless callback.is_a? Array
+
+        instance.instance_variable_set(
+          "@#{callback[0]}",
+          callback[1].call(instance.instance_variable_get("@#{callback[0]}"))
+        )
+      end
+    end
+
     def attribute?(attribute)
       attributes.map(&:name).include? attribute.name
     end

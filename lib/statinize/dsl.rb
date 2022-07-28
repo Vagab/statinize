@@ -1,3 +1,4 @@
+# Defines DSL for statinize block
 module Statinize
   module DSL
     def attribute(*attrs, **options)

@@ -29,7 +29,7 @@ module Statinize
       end
 
       def run_before_callbacks
-        statinizer.before_callbacks.each { |b| instance_exec(&b) }
+        statinizer.run_before_callbacks(self)
       end
 
       def attributes

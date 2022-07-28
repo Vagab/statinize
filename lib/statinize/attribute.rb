@@ -9,6 +9,9 @@ module Statinize
       @klass = klass
       @name = name
       @options = OptionsCollection.new
+      if opts.key? :before
+        statinizer.before_callbacks << [name, opts.delete(:before)]
+      end
       @options << opts.clone.extend(Options) unless opts.empty?
     end
 
