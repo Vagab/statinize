@@ -87,3 +87,20 @@ end
 # Later it will all be documented
 
 ExampleBlockValidation.new.valid? # => false
+
+class ExampleStatinizeBeforeClass
+  include Statinize::Statinizable
+
+  statinize do
+    before do
+      first_name.upcase!
+      last_name.downcase!
+    end
+
+    attribute :first_name, :last_name, type: String
+  end
+end
+
+e = ExampleStatinizeBeforeClass.new(first_name: "hermes", last_name: "ATHENA")
+e.first_name # => HERMES
+e.last_name # => athena

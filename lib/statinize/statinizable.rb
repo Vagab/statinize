@@ -18,12 +18,18 @@ module Statinize
           end
         end
 
+        run_before_callbacks
+
         define_validation
         validate!
       end
 
       def validation
         @validation ||= Validation.new(statinizer, self)
+      end
+
+      def run_before_callbacks
+        statinizer.run_before_callbacks(self)
       end
 
       def attributes
