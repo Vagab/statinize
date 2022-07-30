@@ -104,14 +104,3 @@ end
 e = ExampleStatinizeBeforeClass.new(first_name: "hermes", last_name: "ATHENA")
 e.first_name # => HERMES
 e.last_name # => athena
-
-class ExampleAttributeBeforeClass
-  include Statinize::Statinizable
-
-  statinize do
-    attribute :first_name, before: proc { |v| v.strip! }
-  end
-end
-
-e = ExampleAttributeBeforeClass.new(first_name: "  Hermes  ")
-e.first_name # => "Hermes"
