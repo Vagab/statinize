@@ -1,9 +1,9 @@
 require_relative "lib/statinize"
 
-Statinize::Statinizer.configure do |config|
-  # Every class by default will raise an error
-  config.force = true
-end
+# Statinize::Statinizer.configure do |config|
+#   # Every class by default will raise an error
+#   config.force = true
+# end
 
 class ExampleClass
   include Statinize::Statinizable

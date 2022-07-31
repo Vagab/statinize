@@ -24,7 +24,7 @@ module Statinize
       end
 
       def should_cast?
-        key?(:type) && key?(:cast)
+        key?(:type) && public_send(:[], :cast)
       end
 
       def should_validate?(instance)

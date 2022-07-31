@@ -1,5 +1,5 @@
 RSpec.describe "Conditional Validation" do
-  let!(:example) { ConditionalValidation::ExampleClass }
+  let!(:example) { ConditionalValidationSpec::Example }
 
   describe "conditions" do
     context "when two conditions for same attribute and one is forced" do
@@ -43,9 +43,9 @@ RSpec.describe "Conditional Validation" do
 
       it { is_expected.to_not be_valid }
       it "has a proper error message" do
-        expect(subject.errors.to_s).to eq(
-          "ValidationError: Name should be one of hehe"
-        )
+        expect(subject.errors).to eq({
+          name: ["should be one of hehe"],
+        })
       end
     end
 
@@ -54,9 +54,9 @@ RSpec.describe "Conditional Validation" do
 
       it { is_expected.to_not be_valid }
       it "has a proper error message" do
-        expect(subject.errors.to_s).to eq(
-          "ValidationError: Name should be one of hoho"
-        )
+        expect(subject.errors).to eq({
+          name: ["should be one of hoho"],
+        })
       end
     end
 
@@ -78,17 +78,17 @@ RSpec.describe "Conditional Validation" do
 
         it { is_expected.to_not be_valid }
         it "has a proper error message" do
-          expect(subject.errors.to_s).to eq(
-            "ValidationError: Name should be one of haha"
-          )
+          expect(subject.errors).to eq({
+            name: ["should be one of haha"],
+          })
         end
       end
     end
   end
 end
 
-module ConditionalValidation
-  class ExampleClass
+module ConditionalValidationSpec
+  class Example
     include Statinize::Statinizable
 
     statinize do
