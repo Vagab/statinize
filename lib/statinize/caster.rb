@@ -30,7 +30,9 @@ module Statinize
     attr_reader :instance, :attr_name, :attr_value, :validator_value
 
     def castable?
-      attr_value.respond_to? casting
+      return attr_value.respond_to?(casting) if casting.is_a?(String) || casting.is_a?(Symbol)
+
+      false
     end
 
     def casting
