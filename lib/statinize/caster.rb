@@ -9,6 +9,8 @@ module Statinize
       Symbol => :to_sym,
       Enumerator => :to_enum,
       Proc => :to_proc,
+      Array => :to_a,
+      BigDecimal => :to_d,
     }.freeze
 
     def initialize(instance, attr, option)

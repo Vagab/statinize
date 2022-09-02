@@ -6,8 +6,9 @@ module Statinize
     end
 
     module PrependedMethods
-      def initialize(*args, **kwargs, &block)
+      def initialize(options = {}, **kwargs, &block)
         symbolized = kwargs.transform_keys(&:to_sym)
+          .merge(options.transform_keys(&:to_sym))
 
         if private_methods(false).include? :initialize
           super(*args, **kwargs, &block)

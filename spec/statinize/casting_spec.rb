@@ -57,6 +57,14 @@ RSpec.describe "Casting" do
         expect(subject.action).to eq :new?.to_proc
       end
     end
+
+    context "when type is bigdecimal" do
+      subject { example.new(percentage: 1.0 / 3) }
+
+      it "casts to bidgecimal" do
+        expect(subject.percentage).to eq (1.0 / 3).to_d
+      end
+    end
   end
 end
 
@@ -74,6 +82,7 @@ module Casting
         attribute :status, type: Symbol
         attribute :enum, type: Enumerator
         attribute :action, type: Proc
+        attribute :percentage, type: BigDecimal
       end
     end
   end

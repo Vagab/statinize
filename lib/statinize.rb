@@ -1,6 +1,7 @@
 require "set"
 require "pry"
 require "singleton"
+require "bigdecimal/util"
 require_relative "statinize/statinizable"
 require_relative "statinize/dsl"
 require_relative "statinize/statinizer"
