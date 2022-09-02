@@ -1,8 +1,9 @@
 module Statinize
   class PresenceValidator < Validator
     def valid?
-      validator_value &&
-        !empty_array? &&
+      return true unless validator_value
+
+      !empty_array? &&
         !empty_hash? &&
         !empty_string? &&
         !attr_value.nil?

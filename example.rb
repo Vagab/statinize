@@ -1,9 +1,9 @@
 require_relative "lib/statinize"
 
-Statinize::Statinizer.configure do |config|
-  # Every class by default will raise an error
-  config.force = true
-end
+# Statinize::Statinizer.configure do |config|
+#   # Every class by default will raise an error
+#   config.force = true
+# end
 
 class ExampleClass
   include Statinize::Statinizable
@@ -104,3 +104,15 @@ end
 e = ExampleStatinizeBeforeClass.new(first_name: "hermes", last_name: "ATHENA")
 e.first_name # => HERMES
 e.last_name # => athena
+
+class ExampleStatinizeWithHash
+  include Statinize::Statinizable
+
+  statinize do
+    attribute :name, :age
+  end
+end
+
+e = ExampleStatinizeWithHash.new({ name: "name", age: 69 })
+e.name # => name
+e.age # => 69

@@ -37,5 +37,24 @@ module Statinize
     def force(force = nil)
       force.nil? ? @force : @force = force
     end
+
+    protected
+
+    def merge_options(**options)
+      attributes.each do |attribute|
+        attribute.options.each do |option|
+          option.merge!(options)
+        end
+      end
+    end
+
+    def populate(attrs)
+      attrs.each do |attr|
+        attribute attr.name
+        attributes
+          .find { _1.name == attr.name }
+          .options = attr.options.clone
+      end
+    end
   end
 end

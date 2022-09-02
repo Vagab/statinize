@@ -23,7 +23,7 @@ module Statinize
     end
 
     def add_attribute(attribute)
-      attributes.add?(attribute)
+      attributes.add(attribute) unless attribute? attribute
     end
 
     def attributes
@@ -45,21 +45,6 @@ module Statinize
     end
 
     protected
-
-    def merge_options(**options)
-      attributes.each do |attribute|
-        attribute.add_options(options)
-      end
-    end
-
-    def populate(attrs)
-      attrs.each do |attr|
-        attribute attr.name
-        attributes
-          .find { _1.name == attr.name }
-          .options = attr.options.clone
-      end
-    end
 
     def all_validators_defined?
       attributes.map { |attr| attr.options.all_validators_defined? }.all? { !!_1 }

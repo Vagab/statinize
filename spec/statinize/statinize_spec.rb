@@ -101,3 +101,7 @@ class ExampleForcedClass
     validate :age, type: Integer, presence: true
   end
 end
+
+Statinize::Statinizer.configure do |config|
+  config.force = nil
+end

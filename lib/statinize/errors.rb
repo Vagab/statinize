@@ -7,10 +7,12 @@ module Statinize
 
   class UndefinedAttribute < StandardError; end
 
-  class Errors < Array
-    def to_s
-      nice_errors = map do |i|
-        "#{i.keys.first.to_s.split("_").tap { |attr| attr.first.capitalize! }.join(" ")} #{i.values.first}"
+  class Errors < Hash
+    def nice
+      nice_errors = map do |attr_name, errors|
+        errors.map do |error|
+          "#{attr_name.to_s.split("_").tap { |attr| attr.first.capitalize! }.join(" ")} #{error}"
+        end.join("; ")
       end.join("; ")
 
       "ValidationError: #{nice_errors}"
