@@ -6,7 +6,7 @@ module Statinize
     end
 
     module PrependedMethods
-      def initialize(options = {}, **kwargs, &block)
+      def initialize(options = {}, *args, **kwargs, &block)
         symbolized = kwargs.transform_keys(&:to_sym)
           .merge(options.transform_keys(&:to_sym))
 
