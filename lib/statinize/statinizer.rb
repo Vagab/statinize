@@ -23,7 +23,7 @@ module Statinize
     end
 
     def add_attribute(attribute)
-      attributes.add(attribute) unless attribute? attribute
+      attributes.add(attribute)
     end
 
     def attributes
@@ -42,6 +42,23 @@ module Statinize
 
     def check_validators_exist!
       raise NoSuchValidatorError unless all_validators_defined?
+    end
+
+    def merge_options(**options)
+      attributes.each do |attribute|
+        attribute.options.each do |option|
+          option.merge!(options)
+        end
+      end
+    end
+
+    def populate(attrs)
+      attrs.each do |attr|
+        attribute attr.name
+        attributes
+          .find { _1.name == attr.name }
+          .options = attr.options.clone
+      end
     end
 
     protected

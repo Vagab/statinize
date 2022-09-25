@@ -3,11 +3,25 @@ module Statinize
     def self.included(klass)
       klass.extend(ClassMethods)
       klass.prepend(PrependedMethods)
+
+      statinized_ancestors = klass.ancestors
+        .reject { |a| a == klass || a == Statinize::Statinizable }
+        .select { |a| a.ancestors.include? Statinize::Statinizable }
+
+      if statinized_ancestors.any?
+        klass.instance_variable_set("@statinizer", Statinizer.new(klass))
+
+        statinized_ancestors.each do |ancestor|
+          klass.statinizer.populate(ancestor.statinizer.attributes)
+        end
+      end
     end
 
     module PrependedMethods
       def initialize(options = {}, *args, **kwargs, &block)
         symbolized = kwargs.merge(options).transform_keys(&:to_sym)
+        extra_attributes = symbolized.keys.map(&:to_sym) - statinizer.attributes.map(&:name).map(&:to_sym)
+        raise UnknownAttributeError, "Attributes #{extra_attributes.join(", ")} are unknown" if extra_attributes.any?
 
         if private_methods(false).include? :initialize
           super(*args, **kwargs, &block)
@@ -46,9 +60,9 @@ module Statinize
 
       private
 
-      def check_defined!(kwargs)
+      def check_defined!(options)
         statinizer.attributes.map(&:name).each do |attr|
-          undefined_attrs << attr if public_send(attr) != kwargs[attr] || !kwargs.key?(attr)
+          undefined_attrs << attr if public_send(attr) != options[attr] || !options.key?(attr)
         end
 
         raise UndefinedAttributeError, "Not all attributes defined in statinize block are defined in initialize"
@@ -57,7 +71,7 @@ module Statinize
 
     module ClassMethods
       def statinize(&block)
-        @statinizer = Statinizer.new(self)
+        @statinizer = Statinizer.new(self) unless @statinizer
 
         statinizer.instance_eval(&block)
 
@@ -66,6 +80,11 @@ module Statinize
 
       def statinizer
         @statinizer
+      end
+
+      def inherited(klass)
+        super(klass)
+        klass.include(Statinize::Statinizable)
       end
     end
   end

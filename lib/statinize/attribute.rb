@@ -17,7 +17,11 @@ module Statinize
     end
 
     def create
-      statinizer.add_attribute(self) unless attribute?
+      if attribute?
+        statinizer.attributes.find { |a| a.name == name }.options = options
+      else
+        statinizer.add_attribute(self)
+      end
       klass.class_eval <<-RUBY_EVAL, __FILE__, __LINE__ + 1
         def #{name}
           @#{name}

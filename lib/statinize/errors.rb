@@ -5,7 +5,9 @@ module Statinize
 
   class InvalidConditionError < StandardError; end
 
-  class UndefinedAttribute < StandardError; end
+  class UndefinedAttributeError < StandardError; end
+
+  class UnknownAttributeError < StandardError; end
 
   class Errors < Hash
     def nice
