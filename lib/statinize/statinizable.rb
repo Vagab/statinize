@@ -12,7 +12,7 @@ module Statinize
         klass.instance_variable_set("@statinizer", Statinizer.new(klass))
 
         statinized_ancestors.each do |ancestor|
-          klass.statinizer.populate(ancestor.statinizer.attributes)
+          klass.statinizer.populate(ancestor.statinizer.attributes) if ancestor.statinizer
         end
       end
     end

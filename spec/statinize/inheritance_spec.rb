@@ -30,6 +30,13 @@ RSpec.describe "Inheritance" do
       it { is_expected.to be_valid }
     end
   end
+
+  context "inheritance with missing attributes" do
+    subject { Inheritance::NakedChild.new(params) }
+    let!(:params) { { a: 1, b: 1 } }
+
+    it { is_expected.to be_valid }
+  end
 end
 
 module Inheritance
@@ -41,6 +48,8 @@ module Inheritance
     end
   end
 
+  class NakedParent; include Statinize::Statinizable; end
+
   class ChildWithAttribute < Parent
     statinize do
       attribute :b, type: String
@@ -49,4 +58,10 @@ module Inheritance
   end
 
   class ChildWithoutAttribute < Parent; end
+
+  class NakedChild < NakedParent
+    statinize do
+      attribute :a, :b
+    end
+  end
 end
