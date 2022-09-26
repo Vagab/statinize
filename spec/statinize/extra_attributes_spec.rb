@@ -11,7 +11,7 @@ RSpec.describe "Extra Attributes" do
     let!(:params) { { a: 1, b: 2 } }
 
     it "raises an error" do
-      expect { subject }.to raise_error(Statinize::UnknownAttributeError, "Attributes b are unknown")
+      expect { subject }.to_not raise_error
     end
   end
 end

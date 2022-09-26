@@ -20,8 +20,6 @@ module Statinize
     module PrependedMethods
       def initialize(options = {}, *args, **kwargs, &block)
         symbolized = kwargs.merge(options).transform_keys(&:to_sym)
-        extra_attributes = symbolized.keys.map(&:to_sym) - statinizer.attributes.map(&:name).map(&:to_sym)
-        raise UnknownAttributeError, "Attributes #{extra_attributes.join(", ")} are unknown" if extra_attributes.any?
 
         if private_methods(false).include? :initialize
           super(*args, **kwargs, &block)
