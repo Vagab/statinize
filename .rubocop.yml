@@ -20,6 +20,18 @@ AllCops:
 #   Exclude:
 #     - '**/test/**/*'
 
+Style/ClassMethodsDefinitions:
+  EnforcedStyle: def_self
+
+Lint/RequireRangeParentheses: # new in 1.32
+  Enabled: false
+
+Style/EmptyHeredoc: # new in 1.32
+  Enabled: true
+
+Style/MagicCommentFormat: # new in 1.35
+  Enabled: false
+
 Style/SymbolArray:
   Enabled: false
 
