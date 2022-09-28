@@ -1,6 +1,6 @@
 module Statinize
   class Validator
-    NOT_VALIDATORS = %i[force cast if unless]
+    NOT_VALIDATORS = %i[force cast if unless default]
 
     attr_accessor :attr_value, :validator_value
 

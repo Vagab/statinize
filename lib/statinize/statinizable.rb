@@ -21,6 +21,8 @@ module Statinize
       def initialize(options = {}, *args, **kwargs, &block)
         symbolized = kwargs.merge(options).transform_keys(&:to_sym)
 
+        instantiate_defaults
+
         if private_methods(false).include? :initialize
           super(*args, **kwargs, &block)
           check_defined!(symbolized)
@@ -60,10 +62,16 @@ module Statinize
 
       def check_defined!(options)
         statinizer.attributes.map(&:name).each do |attr|
-          undefined_attrs << attr if public_send(attr) != options[attr] || !options.key?(attr)
+          undefined_attrs << attr unless options.key?(attr)
         end
 
         raise UndefinedAttributeError, "Not all attributes defined in statinize block are defined in initialize"
+      end
+
+      def instantiate_defaults
+        statinizer.attributes.select { |a| a.options.key?(:default) }.each do |attribute|
+          public_send("#{attribute.name}=", attribute.default)
+        end
       end
     end
 

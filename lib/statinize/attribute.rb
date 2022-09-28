@@ -2,26 +2,26 @@ module Statinize
   class Attribute
     include Comparable
 
-    attr_reader :klass, :name
-    attr_accessor :options
+    attr_reader :klass, :name, :default
+    attr_accessor :options_collection, :options
 
-    def initialize(klass, name, opts)
+    def initialize(klass, name, options)
       @klass = klass
       @name = name
-      @options = OptionsCollection.new
-      @options << opts.clone.extend(Options) unless opts.empty?
+      @options = options
+      @options_collection = OptionsCollection.new # TODO: think of a better way
+      @options_collection << options.clone.extend(Options) unless options.empty?
+
+      @default = options[:default] if options.key?(:default)
     end
 
-    def self.create(klass, name, opts = {})
-      new(klass, name, opts).create
+    def self.create(klass, name, options = {})
+      new(klass, name, options).create
     end
 
     def create
-      if attribute?
-        statinizer.attributes.find { |a| a.name == name }.options = options
-      else
-        statinizer.add_attribute(self)
-      end
+      attribute? ? override : add_attribute
+
       klass.class_eval <<-RUBY_EVAL, __FILE__, __LINE__ + 1
         def #{name}
           @#{name}
@@ -37,7 +37,7 @@ module Statinize
     end
 
     def add_options(opts)
-      options << opts.extend(Options)
+      options_collection << opts.extend(Options)
     end
 
     def <=>(other)
@@ -47,6 +47,16 @@ module Statinize
     end
 
     private
+
+    def override
+      attribute = statinizer.attributes.find { |a| a.name == name }
+      attribute.options_collection = options_collection
+      attribute.options = options
+    end
+
+    def add_attribute
+      statinizer.add_attribute(self)
+    end
 
     def statinizer
       klass.statinizer
