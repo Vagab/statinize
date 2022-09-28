@@ -1,13 +1,41 @@
 RSpec.describe "Default value" do
   context "correct default types" do
-    context "empty params" do
-      subject { DefaultValue::Example.new(params) }
+    subject { DefaultValue::Example.new(params) }
 
+    context "empty params" do
       let!(:params) { {} }
 
-      it { is_expected.to be_valid }
-      its(:a) { is_expected.to eq "a" }
-      its(:b) { is_expected.to eq 2 }
+      it { should be_valid }
+      its(:a) { should eq "a" }
+      its(:b) { should eq 2 }
+    end
+
+    context "params present" do
+      let!(:params) { { a: "b", b: 3 } }
+
+      it { should be_valid }
+      its(:a) { should eq "b" }
+      its(:b) { should eq 3 }
+    end
+  end
+
+  context "wrong default type" do
+    subject { DefaultValue::ExampleWithWrongType.new(params) }
+
+    context "empty params" do
+      context "empty params" do
+        let!(:params) { {} }
+
+        it { should_not be_valid }
+        its(:a) { should eq 1 }
+      end
+
+      context "params present" do
+        let!(:params) { { a: "b" } }
+
+        it { should be_valid }
+        its(:a) { should eq "b" }
+      end
     end
   end
 end

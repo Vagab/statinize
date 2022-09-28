@@ -7,18 +7,13 @@ RSpec.describe "Conditional Validation" do
         context "attribute is valid" do
           subject { example.new(age: 6, entity: "a") }
 
-          it { is_expected.to be_valid }
+          it { should be_valid }
         end
 
         context "attribute is invalid" do
           subject { example.new(age: 6, entity: :a) }
 
-          it "raises an error" do
-            expect { subject }.to raise_error(
-              Statinize::ValidationError,
-              "ValidationError: Entity should be String, found Symbol instead"
-            )
-          end
+          its_block { is_expected.to raise_error(Statinize::ValidationError, /Entity(.*?)String(.*?)Symbol instead/) }
         end
       end
 
@@ -26,14 +21,14 @@ RSpec.describe "Conditional Validation" do
         context "attribute is valid" do
           subject { example.new(age: 9, entity: :a) }
 
-          it { is_expected.to be_valid }
+          it { should be_valid }
         end
 
         context "attribute is invalid" do
           subject { example.new(age: 9, entity: "1") }
 
-          it { is_expected.to_not be_valid }
-          it { expect { subject }.to_not raise_error }
+          it { should_not be_valid }
+          its_block { is_expected.to_not raise_error }
         end
       end
     end
@@ -41,47 +36,35 @@ RSpec.describe "Conditional Validation" do
     context "when symbol" do
       subject { example.new(age: 42) }
 
-      it { is_expected.to_not be_valid }
-      it "has a proper error message" do
-        expect(subject.errors).to eq({
-          name: ["should be one of hehe"],
-        })
-      end
+      it { should_not be_valid }
+      its(:errors) { should match({ name: [/should(.*?)hehe/] }) }
     end
 
     context "when proc" do
       subject { example.new(age: 69) }
 
-      it { is_expected.to_not be_valid }
-      it "has a proper error message" do
-        expect(subject.errors).to eq({
-          name: ["should be one of hoho"],
-        })
-      end
+      it { should_not be_valid }
+      its(:errors) { should match({ name: [/should(.*?)hoho/] }) }
     end
 
     context "when if and unless" do
       context "not all if's pass, unless doesn't" do
         subject { example.new(age: 11) }
 
-        it { is_expected.to be_valid }
+        it { should be_valid }
       end
 
       context "all if's pass, unless does to" do
         subject { example.new(age: 13, entity: :a) }
 
-        it { is_expected.to be_valid }
+        it { should be_valid }
       end
 
       context "all if's pass, unless doesn't" do
         subject { example.new(age: 11, entity: :a) }
 
-        it { is_expected.to_not be_valid }
-        it "has a proper error message" do
-          expect(subject.errors).to eq({
-            name: ["should be one of haha"],
-          })
-        end
+        it { should_not be_valid }
+        its(:errors) { should match({ name: [/should(.*?)haha/] }) }
       end
     end
   end

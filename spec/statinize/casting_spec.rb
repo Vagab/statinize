@@ -8,62 +8,49 @@ RSpec.describe "Casting" do
       it "casts to integer" do
         expect(subject.age).to eq 0
       end
+      its(:age) { should eq 0 }
     end
 
     context "when type is string" do
       subject { example.new }
 
-      it "casts to string" do
-        expect(subject.name).to eq ""
-      end
+      its(:name) { should eq "" }
     end
 
     context "when type is float" do
       subject { example.new }
 
-      it "casts to float" do
-        expect(subject.price).to eq 0.0
-      end
+      its(:price) { should eq 0.0 }
     end
 
     context "when type is complex" do
       subject { example.new }
 
-      it "casts to integer" do
-        expect(subject.coord).to eq nil.to_c
-      end
+      its(:coord) { should eq nil.to_c }
     end
 
     context "when type is rational" do
       subject { example.new }
 
-      it "casts to integer" do
-        expect(subject.portion).to eq nil.to_r
-      end
+      its(:portion) { should eq nil.to_r }
     end
 
     context "when type is symbol" do
       subject { example.new(status: "occupied") }
 
-      it "casts to symbol" do
-        expect(subject.status).to eq :occupied
-      end
+      its(:status) { should eq :occupied }
     end
 
     context "when type is proc" do
       subject { example.new(action: :new?) }
 
-      it "casts to proc" do
-        expect(subject.action).to eq :new?.to_proc
-      end
+      its(:action) { should eq :new?.to_proc }
     end
 
     context "when type is bigdecimal" do
       subject { example.new(percentage: 1.0 / 3) }
 
-      it "casts to bidgecimal" do
-        expect(subject.percentage).to eq (1.0 / 3).to_d
-      end
+      its(:percentage) { should eq (1.0 / 3).to_d }
     end
   end
 end

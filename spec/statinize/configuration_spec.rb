@@ -2,9 +2,7 @@ RSpec.describe "Configuration" do
   subject(:example) { ConfigurationSpec::Example.new }
 
   describe "force" do
-    it "forces all classes" do
-      expect { example }.to raise_error(Statinize::ValidationError)
-    end
+    its_block { is_expected.to raise_error(Statinize::ValidationError) }
   end
 end
 
