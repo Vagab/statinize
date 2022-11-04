@@ -1,60 +1,49 @@
 RSpec.describe Statinize do
   describe "statinizer" do
-    let!(:statinizer) { ExampleClass.statinizer }
+    subject { ExampleClass.statinizer }
 
-    it "assigns statinizer" do
-      expect(statinizer.class).to eq Statinize::Statinizer
-    end
+    its(:class) { should eq Statinize::Statinizer }
 
     context "when forced statinizer" do
-      let!(:statinizer) { ExampleForcedClass.statinizer }
+      subject { ExampleForcedClass.statinizer }
 
-      it "assigns force attribute" do
-        expect(statinizer.force).to be_truthy
-      end
+      its(:force) { should be_truthy }
     end
   end
 
   describe "attributes" do
-    let!(:attributes) { ExampleClass.statinizer.attributes }
+    subject { ExampleClass.statinizer.attributes }
 
-    it "assigns attributes to statinizer" do
-      expect(attributes.map(&:class).uniq.first).to eq Statinize::Attribute
-    end
-
-    it "assigns correct number of attributes" do
-      expect(attributes.count).to eq 3
-    end
+    its_map(:class) { are_expected.to all eq Statinize::Attribute }
+    its(:count) { should eq 3 }
   end
 
   describe "statinization" do
     subject { ExampleClass.new(first_name: "a", last_name: "b", age: 1) }
 
-    it { expect { subject }.to_not raise_error }
-    it { is_expected.to be_valid }
+    its_block { is_expected.to_not raise_error }
+    it { should be_valid }
 
     context "when invalid attributes" do
       subject { ExampleClass.new(first_name: "a", last_name: "b", age: {}) }
 
-      it { expect { subject }.to_not raise_error }
-      it { is_expected.to_not be_valid }
+      its_block { is_expected.to_not raise_error }
+      it { should_not be_valid }
 
       context "when casted attribute" do
         subject { ExampleClass.new(first_name: "a", last_name: "b", age: "1") }
 
-        it { expect { subject }.to_not raise_error }
-        it { is_expected.to be_valid }
+        its_block { is_expected.to_not raise_error }
+        it { should be_valid }
       end
 
       context "when invalid forced attribute" do
         subject { ExampleClass.new(first_name: 1, last_name: 2, age: 1) }
 
-        it "raises an error with proper message" do
-          expect { subject }.to raise_error(
+        its_block do
+          is_expected.to raise_error(
             Statinize::ValidationError,
-            "ValidationError: " \
-              "First name should be String, found Integer instead; " \
-              "Last name should be String, found Integer instead"
+            /Validation(.*?)First(.*?)Str(.*?)Int(.*?)Last(.*?)Str(.*?)Int/,
           )
         end
       end
@@ -62,13 +51,10 @@ RSpec.describe Statinize do
       context "when forced class" do
         subject { ExampleForcedClass.new(first_name: {}, last_name: 2, age: "1") }
 
-        it "raises an error with proper message" do
-          expect { subject }.to raise_error(
+        its_block do
+          is_expected.to raise_error(
             Statinize::ValidationError,
-            "ValidationError: " \
-              "First name should be String, found Hash instead; " \
-              "Last name should be String, found Integer instead; " \
-              "Age should be Integer, found String instead"
+            /Validation(.*?)First(.*?)Str(.*?)Hash(.*?)Last(.*?)Str(.*?)Int(.*?)Age(.*?)Int(.*?)Str/,
           )
         end
       end

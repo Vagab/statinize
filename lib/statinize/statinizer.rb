@@ -46,7 +46,7 @@ module Statinize
 
     def merge_options(**options)
       attributes.each do |attribute|
-        attribute.options.each do |option|
+        attribute.options_collection.each do |option|
           option.merge!(options)
         end
       end
@@ -57,14 +57,14 @@ module Statinize
         attribute attr.name
         attributes
           .find { _1.name == attr.name }
-          .options = attr.options.clone
+          .options_collection = attr.options_collection.clone
       end
     end
 
     protected
 
     def all_validators_defined?
-      attributes.map { |attr| attr.options.all_validators_defined? }.all? { !!_1 }
+      attributes.map { |attr| attr.options_collection.all_validators_defined? }.all? { !!_1 }
     end
   end
 end
