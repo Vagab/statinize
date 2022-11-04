@@ -54,7 +54,7 @@ RSpec.describe Statinize do
             Statinize::ValidationError,
             "ValidationError: " \
               "First name should be String, found Integer instead; " \
-              "Last name should be String, found Integer instead"
+              "Last name should be String, found Integer instead",
           )
         end
       end
@@ -68,7 +68,7 @@ RSpec.describe Statinize do
             "ValidationError: " \
               "First name should be String, found Hash instead; " \
               "Last name should be String, found Integer instead; " \
-              "Age should be Integer, found String instead"
+              "Age should be Integer, found String instead",
           )
         end
       end

@@ -16,7 +16,7 @@ RSpec.describe "Conditional Validation" do
           it "raises an error" do
             expect { subject }.to raise_error(
               Statinize::ValidationError,
-              "ValidationError: Entity should be String, found Symbol instead"
+              "ValidationError: Entity should be String, found Symbol instead",
             )
           end
         end

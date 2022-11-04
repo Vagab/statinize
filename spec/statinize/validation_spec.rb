@@ -19,7 +19,7 @@ RSpec.describe "Validation" do
           "ValidationError: " \
             "Name should be one of cool, not_cool, awesome; " \
             "Name is blank; " \
-            "Age is blank"
+            "Age is blank",
         )
       end
     end
