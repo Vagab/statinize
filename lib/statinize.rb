@@ -1,6 +1,5 @@
 require "set"
 require "pry"
-require "singleton"
 require "bigdecimal/util"
 require "statinize/statinizable"
 require "statinize/dsl"
@@ -23,4 +22,6 @@ module Statinize
   def self.included(klass)
     klass.include(Statinize::Statinizable)
   end
+
+  def self.configure = yield Config
 end

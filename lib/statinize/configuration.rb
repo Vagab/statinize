@@ -1,11 +1,7 @@
 module Statinize
-  class Configuration
-    include Singleton
+  module Config
+    extend self
 
     attr_accessor :force
-
-    def self.configure
-      yield instance if block_given?
-    end
   end
 end
