@@ -1,23 +1,27 @@
 require "set"
 require "pry"
-require "bigdecimal/util"
-require_relative "statinize/statinizable"
-require_relative "statinize/dsl"
-require_relative "statinize/statinizer"
-require_relative "statinize/configuration"
-require_relative "statinize/attribute"
-require_relative "statinize/attribute/options"
-require_relative "statinize/attribute/options/conditions"
-require_relative "statinize/attribute/options_collection"
-require_relative "statinize/validator"
-require_relative "statinize/validation"
-require_relative "statinize/validators/type_validator"
-require_relative "statinize/validators/presence_validator"
-require_relative "statinize/validators/inclusion_validator"
-require_relative "statinize/validators/nil_validator"
-require_relative "statinize/caster"
-require_relative "statinize/errors"
+require "bigdecimal/util
+require "statinize/statinizable"
+require "statinize/dsl"
+require "statinize/statinizer"
+require "statinize/configuration"
+require "statinize/attribute"
+require "statinize/attribute/options"
+require "statinize/attribute/options/conditions"
+require "statinize/attribute/options_collection"
+require "statinize/validator"
+require "statinize/validation"
+require "statinize/validators/type_validator"
+require "statinize/validators/presence_validator"
+require "statinize/validators/inclusion_validator"
+require "statinize/validators/nil_validator"
+require "statinize/caster"
+require "statinize/errors"
 
 module Statinize
+  def self.included(klass)
+    klass.include(Statinize::Statinizable)
+  end
+  
   def self.configure = yield Config
 end

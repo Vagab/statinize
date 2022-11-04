@@ -5,13 +5,13 @@ RSpec.describe "Inheritance" do
     context "wrong parameters" do
       let!(:params) { { a: 1, b: 2, c: 1 } }
 
-      it { is_expected.not_to be_valid }
+      it { should_not be_valid }
     end
 
     context "correct parameters" do
       let!(:params) { { a: 1, b: "1", c: 1 } }
 
-      it { is_expected.to be_valid }
+      it { should be_valid }
     end
   end
 
@@ -21,13 +21,13 @@ RSpec.describe "Inheritance" do
     context "wrong parameters" do
       let!(:params) { { a: 1, b: "1" } }
 
-      it { is_expected.not_to be_valid }
+      it { should_not be_valid }
     end
 
     context "correct parameters" do
       let!(:params) { { a: 1, b: 1 } }
 
-      it { is_expected.to be_valid }
+      it { should be_valid }
     end
   end
 
@@ -35,20 +35,20 @@ RSpec.describe "Inheritance" do
     subject { Inheritance::NakedChild.new(params) }
     let!(:params) { { a: 1, b: 1 } }
 
-    it { is_expected.to be_valid }
+    it { should be_valid }
   end
 end
 
 module Inheritance
   class Parent
-    include Statinize::Statinizable
+    include Statinize
 
     statinize do
       attribute :a, :b, type: Integer
     end
   end
 
-  class NakedParent; include Statinize::Statinizable; end
+  class NakedParent; include Statinize; end
 
   class ChildWithAttribute < Parent
     statinize do

@@ -4,21 +4,19 @@ RSpec.describe "Extra Attributes" do
   context "not too many params" do
     let!(:params) { { a: 1 } }
 
-    it { is_expected.to be_valid }
+    it { should be_valid }
   end
 
   context "too many params" do
     let!(:params) { { a: 1, b: 2 } }
 
-    it "raises an error" do
-      expect { subject }.to_not raise_error
-    end
+    its_block { is_expected.to_not raise_error }
   end
 end
 
 module ExtraAttributes
   class Example
-    include Statinize::Statinizable
+    include Statinize
 
     statinize do
       attribute :a

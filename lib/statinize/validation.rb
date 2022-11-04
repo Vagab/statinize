@@ -37,7 +37,7 @@ module Statinize
 
     def fill_errors
       attributes.each do |attr|
-        attr.options.each do |option|
+        attr.options_collection.each do |option|
           next unless option.should_validate?(instance)
 
           attr_value = instance.public_send(attr.name)
