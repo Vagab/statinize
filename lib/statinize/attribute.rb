@@ -13,7 +13,8 @@ module Statinize
       @options_collection << options.clone.extend(Options) unless options.empty?
 
       @default = options[:default] if options.key?(:default)
-      @arg_name, @name = name, options[:name] || name
+      @arg_name = name
+      @name = options[:name] || name
     end
 
     def self.create(klass, name, options = {})
