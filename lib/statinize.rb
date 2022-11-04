@@ -1,6 +1,5 @@
 require "set"
 require "pry"
-require "singleton"
 require "bigdecimal/util"
 require_relative "statinize/statinizable"
 require_relative "statinize/dsl"
@@ -18,3 +17,7 @@ require_relative "statinize/validators/inclusion_validator"
 require_relative "statinize/validators/nil_validator"
 require_relative "statinize/caster"
 require_relative "statinize/errors"
+
+module Statinize
+  def self.configure = yield Config
+end

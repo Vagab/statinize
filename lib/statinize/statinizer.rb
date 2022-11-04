@@ -4,10 +4,6 @@ module Statinize
 
     attr_reader :klass, :before_callbacks
 
-    def self.configure(&block)
-      Configuration.configure(&block)
-    end
-
     def initialize(klass)
       @klass = klass
       @force = config.force
@@ -15,7 +11,7 @@ module Statinize
     end
 
     def config
-      @config ||= Configuration.instance
+      @config ||= Config
     end
 
     def force?

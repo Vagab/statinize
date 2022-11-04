@@ -76,7 +76,7 @@ RSpec.describe Statinize do
   end
 end
 
-Statinize::Statinizer.configure do |config|
+Statinize.configure do |config|
   config.force = true
 end
 
@@ -102,6 +102,6 @@ class ExampleForcedClass
   end
 end
 
-Statinize::Statinizer.configure do |config|
+Statinize.configure do |config|
   config.force = nil
 end

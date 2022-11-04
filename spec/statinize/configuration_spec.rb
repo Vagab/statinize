@@ -8,7 +8,7 @@ RSpec.describe "Configuration" do
   end
 end
 
-Statinize::Statinizer.configure do |config|
+Statinize.configure do |config|
   config.force = true
 end
 
@@ -22,6 +22,6 @@ module ConfigurationSpec
   end
 end
 
-Statinize::Statinizer.configure do |config|
+Statinize.configure do |config|
   config.force = nil
 end
