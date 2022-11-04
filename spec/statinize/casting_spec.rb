@@ -57,7 +57,7 @@ end
 
 module Casting
   class Example
-    include Statinize::Statinizable
+    include Statinize
 
     statinize do
       with cast: true, nil: false do

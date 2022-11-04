@@ -15,7 +15,7 @@ end
 
 module ValidationSpec
   class Example
-    include Statinize::Statinizable
+    include Statinize
 
     statinize do
       attribute :name, type: String, inclusion: ["cool", "not_cool", "awesome"], presence: true
@@ -23,7 +23,7 @@ module ValidationSpec
   end
 
   class ForcedExample
-    include Statinize::Statinizable
+    include Statinize
 
     statinize do
       force true

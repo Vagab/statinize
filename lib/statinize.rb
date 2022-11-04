@@ -18,3 +18,9 @@ require "statinize/validators/inclusion_validator"
 require "statinize/validators/nil_validator"
 require "statinize/caster"
 require "statinize/errors"
+
+module Statinize
+  def self.included(klass)
+    klass.include(Statinize::Statinizable)
+  end
+end

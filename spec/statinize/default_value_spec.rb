@@ -42,7 +42,7 @@ end
 
 module DefaultValue
   class Example
-    include Statinize::Statinizable
+    include Statinize
 
     statinize do
       attribute :a, type: String, default: "a"
@@ -51,7 +51,7 @@ module DefaultValue
   end
 
   class ExampleWithWrongType
-    include Statinize::Statinizable
+    include Statinize
 
     statinize do
       attribute :a, type: String, default: 1

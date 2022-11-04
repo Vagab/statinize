@@ -20,7 +20,7 @@ end
 
 module InitializeWithHash
   class Example
-    include Statinize::Statinizable
+    include Statinize
 
     statinize do
       attribute :name, :age

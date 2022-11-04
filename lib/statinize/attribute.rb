@@ -2,7 +2,7 @@ module Statinize
   class Attribute
     include Comparable
 
-    attr_reader :klass, :name, :default
+    attr_reader :klass, :name, :default, :arg_name
     attr_accessor :options_collection, :options
 
     def initialize(klass, name, options)
@@ -13,6 +13,8 @@ module Statinize
       @options_collection << options.clone.extend(Options) unless options.empty?
 
       @default = options[:default] if options.key?(:default)
+      @arg_name = name
+      @name = options[:name] || name
     end
 
     def self.create(klass, name, options = {})

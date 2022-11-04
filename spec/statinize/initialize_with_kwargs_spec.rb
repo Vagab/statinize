@@ -8,7 +8,7 @@ end
 
 module InitializeWithKwargs
   class Example
-    include Statinize::Statinizable
+    include Statinize
 
     statinize do
       attribute :name, :age
