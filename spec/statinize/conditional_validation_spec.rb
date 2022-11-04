@@ -72,7 +72,7 @@ end
 
 module ConditionalValidationSpec
   class Example
-    include Statinize::Statinizable
+    include Statinize
 
     statinize do
       force false

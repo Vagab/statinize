@@ -67,7 +67,7 @@ Statinize::Statinizer.configure do |config|
 end
 
 class ExampleClass
-  include Statinize::Statinizable
+  include Statinize
 
   statinize do
     force false
@@ -77,7 +77,7 @@ class ExampleClass
 end
 
 class ExampleForcedClass
-  include Statinize::Statinizable
+  include Statinize
 
   statinize do
     attribute :first_name, :last_name

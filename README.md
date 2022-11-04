@@ -14,7 +14,7 @@ Allows you to specify types of the attributes an object will have, validations, 
 You can define an attribute and it's type at the same time like this:
 ```ruby
 class Example
-  include Statinize::Statinizable
+  include Statinize
 
   statinize do
     attribute :name, type: String
@@ -45,7 +45,7 @@ Statinize::Statinizer.configure do |config|
 end
 
 class ExampleClass
-  include Statinize::Statinizable
+  include Statinize
 
   statinize do
     # Won't raise an error
@@ -73,7 +73,7 @@ pp example3.valid? # => true
 
 # Another example
 class AnotherExampleClass
-  include Statinize::Statinizable
+  include Statinize
 
   statinize do
     attribute :age

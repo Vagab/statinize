@@ -6,7 +6,7 @@ require_relative "lib/statinize"
 # end
 
 class ExampleClass
-  include Statinize::Statinizable
+  include Statinize
 
   statinize do
     # Won't raise an error
@@ -34,7 +34,7 @@ example3.valid? # => true
 
 # Another example
 class AnotherExampleClass
-  include Statinize::Statinizable
+  include Statinize
 
   statinize do
     attribute :age
@@ -64,7 +64,7 @@ rescue Statinize::ValidationError => e
 end
 
 class ExampleBlockValidation
-  include Statinize::Statinizable
+  include Statinize
 
   statinize do
     force false
@@ -89,7 +89,7 @@ end
 ExampleBlockValidation.new.valid? # => false
 
 class ExampleStatinizeBeforeClass
-  include Statinize::Statinizable
+  include Statinize
 
   statinize do
     before do
@@ -106,7 +106,7 @@ e.first_name # => HERMES
 e.last_name # => athena
 
 class ExampleStatinizeWithHash
-  include Statinize::Statinizable
+  include Statinize
 
   statinize do
     attribute :name, :age

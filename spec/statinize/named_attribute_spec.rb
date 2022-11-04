@@ -2,7 +2,7 @@ RSpec.describe "Named attribute" do
   context "named attribute" do
     subject { NamedAttribute::Example.new(params) }
 
-    let!(:params) do 
+    let!(:params) do
       {
         name: "my_name", my_name: "name",
         stuff: "stuff", also_stuff: "also_stuff",
@@ -18,7 +18,7 @@ end
 
 module NamedAttribute
   class Example
-    include Statinize::Statinizable
+    include Statinize
 
     statinize do
       attribute :name, name: :my_name

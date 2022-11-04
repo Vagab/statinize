@@ -41,14 +41,14 @@ end
 
 module Inheritance
   class Parent
-    include Statinize::Statinizable
+    include Statinize
 
     statinize do
       attribute :a, :b, type: Integer
     end
   end
 
-  class NakedParent; include Statinize::Statinizable; end
+  class NakedParent; include Statinize; end
 
   class ChildWithAttribute < Parent
     statinize do

@@ -16,7 +16,7 @@ end
 
 module ExtraAttributes
   class Example
-    include Statinize::Statinizable
+    include Statinize
 
     statinize do
       attribute :a
