@@ -18,17 +18,17 @@ module Statinize
     end
 
     module PrependedMethods
-      def initialize(options = {}, *args, **kwargs, &block)
-        symbolized = kwargs.merge(options).transform_keys(&:to_sym)
+      def initialize(options = {}, *args, &block)
+        symbolized = options.transform_keys(&:to_sym)
 
         instantiate_defaults
 
         if private_methods(false).include? :initialize
-          super(*args, **kwargs, &block)
+          super(options, *args, &block)
           check_defined!(symbolized)
         else
-          statinizer.attributes.map(&:name).each do |attr|
-            instance_variable_set("@#{attr}", symbolized[attr]) if symbolized.key?(attr)
+          statinizer.attributes.each do |attr|
+            instance_variable_set("@#{attr.name}", symbolized[attr.arg_name]) if symbolized.key?(attr.arg_name)
           end
         end
 
