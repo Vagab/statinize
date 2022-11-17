@@ -1,6 +1,7 @@
 require "set"
 require "pry"
 require "bigdecimal/util"
+require "core_ext"
 require "statinize/statinizable"
 require "statinize/dsl"
 require "statinize/statinizer"
