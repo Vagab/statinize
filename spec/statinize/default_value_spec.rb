@@ -16,6 +16,36 @@ RSpec.describe "Default value" do
       it { should be_valid }
       its(:a) { should eq "b" }
       its(:b) { should eq 3 }
+
+      context "collection default" do
+        let!(:params) { {} }
+
+        context "when adding to the same instance" do
+          before do
+            subject.c << 5
+          end
+
+          its(:c) { should eq([5]) }
+        end
+
+        context "when same instance's default was modified" do
+          before do
+            subject.c << 5
+          end
+
+          it "assigns correct default" do
+            expect(DefaultValue::Example.new.c).to be_empty
+          end
+        end
+
+        context "when another instance's default was modified" do
+          before do
+            DefaultValue::Example.new.c << 5
+          end
+
+          its(:c) { should be_empty }
+        end
+      end
     end
   end
 
@@ -47,6 +77,7 @@ module DefaultValue
     statinize do
       attribute :a, type: String, default: "a"
       attribute :b, type: Integer, default: 2
+      attribute :c, type: Array, default: []
     end
   end
 
