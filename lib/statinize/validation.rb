@@ -43,7 +43,7 @@ module Statinize
           attr_value = instance.public_send(attr.name)
 
           option.validators.each do |validator_class, validator_value|
-            validator_instance = validator_class.new(attr_value, validator_value)
+            validator_instance = validator_class.new(attr_value, validator_value, instance)
 
             if option[:type] && option.should_cast? && attr_value.nil? && (option[:presence] || option[:nil] == false)
               cast(attr, option)
