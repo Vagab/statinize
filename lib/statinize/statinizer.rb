@@ -50,7 +50,7 @@ module Statinize
 
     def populate(attrs)
       attrs.each do |attr|
-        attribute attr.arg_name, name: attr.name, default: attr.default
+        attribute attr.arg_name, name: attr.name, default: attr.default, default_exec: attr.default_exec
         attributes.find { _1.name == attr.name }.tap do |attr_to_populate|
           attr_to_populate.options_collection = attr.options_collection.clone
           attr_to_populate.options = attr.options.clone
