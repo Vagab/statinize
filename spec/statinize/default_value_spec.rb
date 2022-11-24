@@ -1,8 +1,8 @@
 RSpec.describe "Default value" do
-  context "correct default types" do
+  context "when correct default types" do
     subject { DefaultValue::Example.new(params) }
 
-    context "empty params" do
+    context "when empty params" do
       let!(:params) { {} }
 
       it { should be_valid }
@@ -10,14 +10,18 @@ RSpec.describe "Default value" do
       its(:b) { should eq 2 }
     end
 
-    context "params present" do
+    context "when params present" do
       let!(:params) { { a: "b", b: 3 } }
 
       it { should be_valid }
       its(:a) { should eq "b" }
       its(:b) { should eq 3 }
 
-      context "collection default" do
+      context "when proc type" do
+        it { should be_valid }
+      end
+
+      context "when collection default" do
         let!(:params) { {} }
 
         context "when adding to the same instance" do
@@ -78,6 +82,7 @@ module DefaultValue
       attribute :a, type: String, default: "a"
       attribute :b, type: Integer, default: 2
       attribute :c, type: Array, default: []
+      attribute :d, type: Proc, default: proc { "69" }
     end
   end
 

@@ -12,7 +12,7 @@ class ProcDefaultDummy
 
   statinize do
     # any function which returns different things will do
-    attribute :a, default: -> { Counter.increment }
+    attribute :a, default_exec: -> { Counter.increment }
   end
 end
 
