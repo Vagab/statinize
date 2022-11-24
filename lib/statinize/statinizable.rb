@@ -70,7 +70,11 @@ module Statinize
 
       def instantiate_defaults
         statinizer.attributes.select { |a| a.options.key?(:default) }.each do |attribute|
-          public_send("#{attribute.name}=", attribute.default.deep_dup)
+          if attribute.default.is_a? Proc
+            public_send("#{attribute.name}=", attribute.default.call)
+          else
+            public_send("#{attribute.name}=", attribute.default.deep_dup)
+          end
         end
       end
     end
