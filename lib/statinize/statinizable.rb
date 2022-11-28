@@ -21,8 +21,6 @@ module Statinize
       def initialize(options = {}, *args, &block)
         symbolized = options.transform_keys(&:to_sym)
 
-        instantiate_defaults
-
         if private_methods(false).include? :initialize
           super(options, *args, &block)
           check_defined!(symbolized)
@@ -31,6 +29,8 @@ module Statinize
             instance_variable_set("@#{attr.name}", symbolized[attr.arg_name]) if symbolized.key?(attr.arg_name)
           end
         end
+
+        instantiate_defaults
 
         run_before_callbacks
 
@@ -69,11 +69,15 @@ module Statinize
       end
 
       def instantiate_defaults
-        statinizer.attributes.select { |a| a.options.key?(:default) }.each do |attribute|
+        undefined_attributes = statinizer.attributes.select do |attribute|
+          public_send(attribute.name).nil?
+        end
+
+        undefined_attributes.select { |a| a.options.key?(:default) }.each do |attribute|
           public_send("#{attribute.name}=", attribute.default.deep_dup)
         end
 
-        statinizer.attributes.select { |a| a.options.key?(:default_exec) }.each do |attribute|
+        undefined_attributes.select { |a| a.options.key?(:default_exec) }.each do |attribute|
           public_send("#{attribute.name}=", instance_exec(&attribute.default_exec))
         end
       end
