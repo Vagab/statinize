@@ -22,7 +22,7 @@ class ProcDefaultDummy
     attribute :b, default_exec: -> { default }
   end
 
-  def default; "b"; end
+  def default = "b"
 end
 
 class Counter
