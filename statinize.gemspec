@@ -4,7 +4,7 @@ Gem::Specification.new do |s|
   s.name        = "statinize"
   s.version     = version
   s.summary     = "Statinize!"
-  s.description = "Statinization gem. Allows for creation of attributes for a class with a given type."
+  s.description = "Statinization gem. Allows for... lots of stuff. Try it."
   s.authors     = ["Barseek"]
   s.email       = "sergey.b@hey.com"
   s.files       = Dir["lib/**/*.rb"]
