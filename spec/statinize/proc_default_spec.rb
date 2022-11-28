@@ -10,10 +10,14 @@ RSpec.describe "Proc default" do
     end
 
     context "when proc is an instance method" do
-      let!(:params) { { default: "b" } }
+      context "when default is statinized attribute" do
+        let!(:params) { { default: "b" } }
 
-      it "works" do
-        expect(subject.b).to eq "b"
+        its(:b) { should eq "b" }
+      end
+
+      context "when default is an instance method" do
+        its(:c) { should eq "c" }
       end
     end
   end
@@ -25,9 +29,13 @@ class ProcDefaultDummy
   statinize do
     # any function which returns different things will do
     attribute :a, default_exec: -> { Counter.increment }
+
     attribute :b, default_exec: -> { default }
+    attribute :c, default_exec: -> { instance_default }
     attribute :default
   end
+
+  def instance_default = "c"
 end
 
 class Counter
