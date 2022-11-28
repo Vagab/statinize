@@ -4,6 +4,12 @@ RSpec.describe "Proc default" do
       expect(ProcDefaultDummy.new.a).to eq 1
       expect(ProcDefaultDummy.new.a).to eq 2
     end
+
+    context "when proc is an instance method" do
+      it "works" do
+        expect(ProcDefaultDummy.new.b).to eq "b"
+      end
+    end
   end
 end
 
@@ -13,7 +19,10 @@ class ProcDefaultDummy
   statinize do
     # any function which returns different things will do
     attribute :a, default_exec: -> { Counter.increment }
+    attribute :b, default_exec: -> { default }
   end
+
+  def default = "b"
 end
 
 class Counter
