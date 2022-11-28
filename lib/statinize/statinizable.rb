@@ -70,7 +70,7 @@ module Statinize
 
       def instantiate_defaults
         undefined_attributes = statinizer.attributes.select do |attribute|
-          public_send("#{attribute.name}").nil?
+          public_send(attribute.name).nil?
         end
 
         undefined_attributes.select { |a| a.options.key?(:default) }.each do |attribute|
