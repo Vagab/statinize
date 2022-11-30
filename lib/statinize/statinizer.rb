@@ -40,14 +40,6 @@ module Statinize
       raise NoSuchValidatorError unless all_validators_defined?
     end
 
-    def merge_options(**options)
-      attributes.each do |attribute|
-        attribute.options_collection.each do |option|
-          option.merge!(options)
-        end
-      end
-    end
-
     def populate(attrs)
       attrs.each do |attr|
         attribute attr.arg_name, name: attr.name, default: attr.default, default_exec: attr.default_exec

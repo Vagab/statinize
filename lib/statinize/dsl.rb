@@ -1,6 +1,8 @@
 # Defines DSL for statinize block
 module Statinize
   module DSL
+    alias_method :with, :with_options
+
     def attribute(*attrs, **options)
       attrs.each do |attr|
         Attribute.create(klass, attr, options) unless attribute? attr
@@ -13,26 +15,6 @@ module Statinize
         attribute = Attribute.create(klass, attr) unless attribute
         attribute.add_options(options)
       end
-    end
-
-    def with(**options, &block)
-      # create new statinizer instance
-      instance = self.class.new(klass)
-      instance.force(force)
-
-      # execute block in the context of that statinizer
-      # while it's attached to the klass
-      # then rewind and attach the original statinizer(self)
-      # back to the klass
-      klass.instance_variable_set(:@statinizer, instance)
-      instance.instance_exec(&block)
-      klass.instance_variable_set(:@statinizer, self)
-
-      # merge the newly created statinizer with the options
-      instance.merge_options(**options)
-
-      # populate self with the instance's attributes
-      populate(instance.attributes)
     end
 
     def before(&block)
