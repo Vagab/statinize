@@ -1,5 +1,3 @@
-require "active_support/core_ext/object/with_options"
-
 # Defines DSL for statinize block
 module Statinize
   module DSL
