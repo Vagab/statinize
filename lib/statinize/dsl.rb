@@ -1,7 +1,7 @@
 # Defines DSL for statinize block
 module Statinize
   module DSL
-    alias with with_options
+    alias_method :with, :with_options
 
     def attribute(*attrs, **options)
       attrs.each do |attr|
