@@ -2,6 +2,7 @@ source "https://rubygems.org"
 
 gem "pry", "~> 0.14"
 gem "rspec", "~> 3.11"
+gem "activesupport", "~> 7.0.4"
 gem "rubocop-shopify"
 gem "rubocop-rspec"
 gem "rubocop"

@@ -10,4 +10,6 @@ Gem::Specification.new do |s|
   s.files       = Dir["lib/**/*.rb"]
   s.license     = "MIT"
   s.platform    = Gem::Platform::RUBY
+
+  s.add_runtime_dependency "activesupport", '~> 7.0.0'
 end
